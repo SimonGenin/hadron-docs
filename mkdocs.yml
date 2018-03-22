@@ -1,0 +1,16 @@
+site_name: Hadron.pro
+pages:
+    - What is Hadron: index.md
+    - Good reason to use Hadron: reasons.md
+    - The technological benefits of Hadron: benefits.md
+    - Docker: docker.md
+    - How to test with Hadron: tests.md
+    - CRUD example app: example.md
+    - Customize: customize.md
+    - Dependency Injection: di.md
+    - CLI Console: cli.md
+    - Events: events.md
+ 
+
+theme: readthedocs
+docs_dir: /documents/src
