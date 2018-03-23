@@ -10,7 +10,8 @@ pages:
     - Dependency Injection: di.md
     - CLI Console: cli.md
     - Events: events.md
+    - Validation: validation.md
  
 
 theme: readthedocs
-docs_dir: /documents/src
+docs_dir: src/
