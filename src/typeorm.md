@@ -1,31 +1,11 @@
-## TypeORM
-
----
 ACHTUNG
+
 - **We cannot import hadron-typeorm, we need to require it inside array of subpackages inside constructor**
 - **Also events aren't included in this section so logging into console is done using setTimeout!**
 
+
 ---
 
-```javascript
-// index.js
-import * as bodyParser from 'body-parser';
-import express from 'express';
-import hadron from '../brainhub-framework-app/dist/hadron-core';
-import hadronTypeORM from '../brainhub-framework-app/dist/hadron-typeorm';
-
-const port = process.env.PORT || 8080;
-const expressApp = express();
-expressApp.use(bodyParser.json());
-
-hadron(expressApp, [
-  Promise.resolve(hadronTypeORM)
-], {}).then(container => {
-  console.log('Hadron initialized');
-});
-
-expressApp.listen(port);
-```
 
 ### TypeORM installation
 Install **hadron-typeorm** package using npm
@@ -48,7 +28,7 @@ hadron(app, [
 ```
 
 ### Connecting to database
-You can set up a new connection using **createDatabaseConnection** helper function which is available in hadron-typeorm package.
+You can set up a new connection using **createDatabaseConnection** helper function which is available in hadron-typeorm package. Instead you can simply use [connection object](https://github.com/typeorm/typeorm/blob/master/docs/connection.md#creating-a-new-connection).
 ```none
 createDatabaseConnection()
   connectionName: string, 
@@ -65,8 +45,7 @@ So setting up a mysql conection would look something like that:
 import hadronTypeORM, { createDatabaseConnection } from 'hadron-typeorm'
 
 const connection = createDatabaseConnection(
-    'mysqlConn', 'mysql', 'localhost', 3306, 'root', 'my-secret-pw', 'test',
-    ['./entity/*.js'],
+    'mysqlConn', 'mysql', 'localhost', 3306, 'root', 'my-secret-pw', 'test'
   );
 ```
 #### Including database connection in hadron
@@ -122,7 +101,7 @@ module.exports = {
 To include our entities in hadron, we simply need to include it inside our config object.
 Let's modify code that we were using to initialize hadron:
 ```javascript
-import {User} from './entity/User';
+import User from './entity/User';
 
 const config = {
   connections: [connection],
