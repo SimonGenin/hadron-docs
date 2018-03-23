@@ -10,7 +10,9 @@ pages:
     - Dependency Injection: di.md
     - CLI Console: cli.md
     - Events: events.md
+    - --Dosc writing GUIDE: guide.md
  
 
 theme: readthedocs
-docs_dir: /documents/src
+# docs_dir: /documents/src
+docs_dir: src
