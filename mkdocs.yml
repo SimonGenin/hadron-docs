@@ -11,6 +11,7 @@ pages:
     - CLI Console: cli.md
     - Events: events.md
     - --Dosc writing GUIDE: guide.md
+    - JSON Provider: json-provider.md
  
 
 theme: readthedocs
