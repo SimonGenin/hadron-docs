@@ -11,7 +11,6 @@ pages:
     - Dependency Injection: di.md
     - CLI Console: cli.md
     - Events: events.md
-    - --Dosc writing GUIDE: guide.md
  
 
 theme: readthedocs
