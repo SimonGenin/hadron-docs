@@ -98,7 +98,7 @@ module.exports = {
 ```
 
 ##### Injecting entities into hadron
-To include our entities in hadron, we simply need to include it inside our config object.
+To include our entities in hadron, we simply need to include them inside our config object.
 Let's modify code that we were using to initialize hadron:
 ```javascript
 import User from './entity/User';
