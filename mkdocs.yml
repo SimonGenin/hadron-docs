@@ -12,6 +12,7 @@ pages:
     - Dependency Injection: di.md
     - CLI Console: cli.md
     - Events: events.md
+    - JSON Provider: json-provider.md
  
 
 theme: readthedocs
