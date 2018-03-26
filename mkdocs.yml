@@ -1,6 +1,7 @@
 site_name: Hadron.pro
 pages:
     - TypeORM: typeorm.md
+    - Routing: routing.md
     - What is Hadron: index.md
     - Good reason to use Hadron: reasons.md
     - The technological benefits of Hadron: benefits.md
