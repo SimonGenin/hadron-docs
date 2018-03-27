@@ -1,8 +1,5 @@
 #Validation Layer
 
-##What is Validation Layer?
-Validation layer provides smth..
-
 ##Installation
 Install **hadron-validation** module from npm (TODO)
 ```bash

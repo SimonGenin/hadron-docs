@@ -1,5 +1,7 @@
 site_name: Hadron.pro
 pages:
+    - TypeORM: typeorm.md
+    - Routing: routing.md
     - What is Hadron: index.md
     - Good reason to use Hadron: reasons.md
     - The technological benefits of Hadron: benefits.md
@@ -11,7 +13,13 @@ pages:
     - CLI Console: cli.md
     - Events: events.md
     - Validation: validation.md
+    - JSON Provider: json-provider.md
  
 
 theme: readthedocs
 docs_dir: src/
+ 
+
+theme: readthedocs
+# docs_dir: /documents/src
+docs_dir: src
