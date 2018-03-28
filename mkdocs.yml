@@ -15,11 +15,7 @@ pages:
     - Validation: validation.md
     - JSON Provider: json-provider.md
  
-
-theme: readthedocs
-docs_dir: src/
  
-
 theme: readthedocs
 # docs_dir: /documents/src
 docs_dir: src
