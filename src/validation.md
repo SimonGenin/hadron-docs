@@ -25,9 +25,9 @@ insertUser.json
             "team": {
                 "$ref": "team"
             },
-            "required": ["name", "team"],
-            "additionalProperties": false
-        }
+        },
+        "required": ["name", "team"],
+        "additionalProperties": false
     }
 ```
 Full documentation about schema keyword: [Ajv documentation](https://epoberezkin.github.io/ajv/)
