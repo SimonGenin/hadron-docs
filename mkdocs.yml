@@ -12,9 +12,10 @@ pages:
     - Dependency Injection: di.md
     - CLI Console: cli.md
     - Events: events.md
+    - Validation: validation.md
     - JSON Provider: json-provider.md
  
-
+ 
 theme: readthedocs
 # docs_dir: /documents/src
 docs_dir: src
