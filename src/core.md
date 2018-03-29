@@ -47,6 +47,7 @@ In the sections below, we will describe step by step what just happened.
 ## Bootstrapping an app
 
 The main hadron-core function is responsible for bootstrapping the app. It registers packages based on passed config and server instance:
+
 ```javascript
 const hadron = require('hadron-core').default;
 
