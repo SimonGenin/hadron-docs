@@ -11,7 +11,7 @@ npm install --save hadron-core hadron-express express
 
 ## Hello world app
 
-Let's start with traditional Hello World app. It will give you a quick grasp of a framework.
+Let's start with traditional Hello World app. It will give you a quick grasp of the framework.
 
 ```javascript
 const hadron = require('hadron-core').default;
