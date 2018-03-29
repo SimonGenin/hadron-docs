@@ -1,20 +1,19 @@
 site_name: Hadron.pro
 pages:
-    - TypeORM: typeorm.md
+    # - What is Hadron: index.md
+    # - The technological benefits of Hadron: benefits.md
+    - Hadron core: core.md
+    # - Good reason to use Hadron: reasons.md
     - Routing: routing.md
-    - What is Hadron: index.md
-    - Good reason to use Hadron: reasons.md
-    - The technological benefits of Hadron: benefits.md
-    - Docker: docker.md
-    - How to test with Hadron: tests.md
-    - CRUD example app: example.md
-    - Customize: customize.md
-    - Dependency Injection: di.md
-    - CLI Console: cli.md
-    - Events: events.md
+    # - Events: events.md
     - Validation: validation.md
     - JSON Provider: json-provider.md
- 
+    - TypeORM: typeorm.md
+    - How to test with Hadron: tests.md
+    # - CRUD example app: example.md
+    # - CLI Console: cli.md
+    # - Customize: customize.md
+    # - Docker: docker.md
  
 theme: readthedocs
 # docs_dir: /documents/src
