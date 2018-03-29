@@ -76,7 +76,7 @@ Now lets move to DI container itself.
 
 Whole framework is build around DI Container concept. Its purpose is to automatically supply proper arguments for routes callbacks and other framework's building blocks.
 
-It is created and used internally by bootstrapping function, it is also returned (as a promise) from bootstrapping function, as mentioned in previous section.
+DI container instance is created and used internally by bootstrapping function, it is also returned (as a promise) from bootstrapping function, as mentioned in previous section.
 
 ### Container methods
 
