@@ -27,21 +27,26 @@ Instance of Hadron Event Manager will sit in the container when **hadron-events-
 ##Hadron Events Manager
 
 Hadron Events Manager instance has two methods on it:  
+
 **registerEvents(listeners)**
-- registers listeners to their events.  
+
+- registers listeners to their events.
 - arguments:
-    - listeners: array of objects which have to follow convention showed below:  
+    * listeners: array of objects which have to follow convention showed below:
 ```javascript
 {
-name: string,  /* listener name */
-event: string, /* event to register to */
-handler: function /* function to handle the event*/
+  name: 'string',  // listener name
+  event: 'string', // event to register to
+  handler: 'function' // function to handle the event
 }
-```
-**emitEvent(eventName)**
-- calls all listeners handlers registered for event with eventName.
+```  
+  
+    
+**emitEvent(eventName)**  
+
+- calls all listeners handlers registered for event with event name passed to it.
 - arguments:
-- eventName: name of the event which will be fired.
+    * eventName: name of the event which will be fired.
    
 ##Listeners
 
@@ -49,28 +54,23 @@ You can create your listeners in main config file.
 
 As a first argument listener's handler method will receive a callback function originally called by hadron, so you can change/override it however you want and then return a call of newly created function or a call of existing callback if you dont want to change it.
 
-To be able to receive callback mentioned above, first argument should named exacly 'callback', otherwise you will not recive the callback.
+To be able to receive callback mentioned above, first argument should be named exacly 'callback', otherwise you will not recive the callback.
 
-You can also, define your listener's handler without any arguments, which is also a valid way to create listeners, you just won't be able to access the callback. 
+You can also, define your listener's handler without callback argument or even without any arguments , which is also a valid way to create listeners, you just won't be able to access the callback. 
 
-The second argument of listeners handler method is ...args, which are arguments for callback function.
+The second argument of listeners handler method is ...args, which can be used as arguments for callback function.
 
 An example of a listener:  
 ```javascript
   {
-    name: 'Listener',
-    event: 'createRoutesEvent',
-    handler: (callback, ...args) => {
-      const myCustomCallback = () => {
-          console.log('Hey! I\'ve changed the original hadron flow!!!');
+      name: 'Listener',
+      event: 'createRoutesEvent',
+      handler: (callback, ...args) => {
+        const myCustomCallback = () => {
+          console.log('Hey! I\'ve changed the original hadron function!!!');
           return callback(...args);
-      }
+        }
       return myCustomCallback();
-    },
+      }
   }
 ```
-
-
-
-
-
