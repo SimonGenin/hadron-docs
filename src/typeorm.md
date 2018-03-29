@@ -1,9 +1,7 @@
-ACHTUNG
+**WIP**
 
-- **We cannot import hadron-typeorm, we need to require it inside array of subpackages inside constructor**
-- **Also events aren't included in this section so logging into console is done using setTimeout!**
-
-
+- **We cannot import hadron-typeorm, we need to require it inside an array of sub packages inside constructor**
+- **Also events aren't included in this section so logging into the console is done using setTimeout!**
 ---
 
 
@@ -16,12 +14,11 @@ $ npm install --save hadron-typeorm
 Import **hadron-typeorm** package into our *index.js* file and include it inside hadron constructor:
 ```javascript
 // index.js
-import hadronTypeORM from 'hadron-typeorm'
 
 // [...]
 
 hadron(app, [
-  hadronTypeORM
+  import('../hadron-typeorm'),
 ], config).then(container => {
   console.log('Hadron with typeORM initialized')
 })
@@ -42,7 +39,7 @@ createDatabaseConnection()
 ```
 So setting up a mysql conection would look something like that:
 ```javascript
-import hadronTypeORM, { createDatabaseConnection } from 'hadron-typeorm'
+import { createDatabaseConnection } from 'hadron-typeorm'
 
 const connection = createDatabaseConnection(
     'mysqlConn', 'mysql', 'localhost', 3306, 'root', 'my-secret-pw', 'test'
@@ -98,8 +95,8 @@ module.exports = {
 ```
 
 ##### Injecting entities into hadron
-To include our entities in hadron, we simply need to include them inside our config object.
-Let's modify code that we were using to initialize hadron:
+To include our entities in hadron, we simply need to include them in our config object.
+Let's modify the code that we were using to initialize hadron:
 ```javascript
 import User from './entity/User';
 
