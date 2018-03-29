@@ -2,8 +2,8 @@
 
 ## Installation
 
-- Install Node.js, we recommend using latest version, installation details on: [nodejs.org](https://nodejs.org)
-- Install hadron-core, hadron-express and express modules from npm (TODO):
+- Install Node.js. We recommend using the latest version, installation details on [nodejs.org](https://nodejs.org)
+- Install `hadron-core`, `hadron-express` and `express` modules from npm (TODO):
 
 ```bash
 npm install --save hadron-core hadron-express express
@@ -57,9 +57,9 @@ hadron(
 )
 ```
 
-The purpose of the main function is to initialize DI container and register package dependencies according to corespondent sections in config object (described in details in next chapters).
+The purpose of the main function is to initialize DI container and register package dependencies according to correspondent sections in config object (described in details in next chapters).
 
-Main function returns promise that resolves to created DI container instance. In the promise `.then` method, besides performing operations on the container instance, we can actually start our server, by calling Express `listen` method:
+Main function returns a promise that resolves to created DI container instance. In the promise `.then()` method, besides performing operations on the container instance, we can actually start our server, by calling Express `listen` method:
 
 ```javascript
 hadron(serverInstance, ...rest)
@@ -70,13 +70,13 @@ hadron(serverInstance, ...rest)
   })
 ```
 
-Now lets move to DI container itself.
+Now, let's move to DI container itself.
 
 ## Dependency Injection
 
-Whole framework is build around DI Container concept. Its purpose is to automatically supply proper arguments for routes callbacks and other framework's building blocks.
+The whole framework is built around DI Container concept. Its purpose is to automatically supply proper arguments for routes callbacks and other framework's building blocks.
 
-DI container instance is created and used internally by bootstrapping function, it is also returned (as a promise) from bootstrapping function, as mentioned in previous section.
+DI container instance is created and used internally by bootstrapping function, it is also returned (as a promise) from bootstrapping function, as mentioned in the previous section.
 
 ### Container methods
 
@@ -86,9 +86,9 @@ DI container instance is created and used internally by bootstrapping function, 
 container.register(key, item, lifetime)
 ```
 
-- `key` - item name on which it will be register inside container
-- `item` - any value (primitive, data structure, function, class etc.)
-- `lifetime` - type of item's life-span
+- `key` - item name on which it will be registered inside the container
+- `item` - any value (primitive, data structure, function, class, etc.)
+- `lifetime` - the type of item's life-span
 
 Lifetime options:
 
@@ -104,7 +104,7 @@ container.take(key)
 
 - `key` - item name (same as provided during registration)
 
-Returns item or item instance according to item type and lifetime option.
+The method returns item or item instance according to item type and lifetime option.
 
 #### Example usage in bootstrapping function
 
@@ -123,6 +123,6 @@ hadron(...args)
 
 ### Accessing container items from routes' callbacks
 
-To access container items from callbacks you can just set arguments' names to match container keys and required dependency will be provided.
+To access container items from callbacks, you can just set arguments' names to match container keys, and required dependency will be provided.
 
 See an example [here](../routing/#retrieving-items-from-container-in-callback)
