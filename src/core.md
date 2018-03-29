@@ -33,7 +33,7 @@ const config = {
 
 hadron(
   expressApp,
-  [Promise.resolve(hadronExpress)], // @todo - pass module without wrapping in promise
+  [Promise.resolve(hadronExpress)], // @todo - pass module without wrapping in a promise
   config
 )
   .then(() => {
