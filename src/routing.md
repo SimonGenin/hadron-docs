@@ -1,3 +1,4 @@
+
 ---
 **TODO**
 
@@ -5,9 +6,27 @@
 
 ---
 
+### Express integration
+
+Currently routing with hadron works only with an express framework. We need to include hadron-express package while initializing hadron.
+```javascript
+import * as bodyParser from 'body-parser';
+import * as express from 'express';
+
+const port = process.env.PORT || 8080;
+const expressApp = express();
+expressApp.use(bodyParser.json());
+
+hadron(app, [
+  import('../hadron-express'),
+], config).then(container => {
+  expressApp.listen(port);
+})
+```
+
 ### Basic routing setup
 
-To set up routes with hadron, we are able to include them as an objects in config object under key **routes**.
+To set up routes with Hadron, we are able to include them as objects in config object under key **routes**.
 ```javascript
 config = {
   routes: {
@@ -27,7 +46,7 @@ Basic, required structure of route object includes:
 
 ### Callback
 
-Callback function can take route parameters as a arguments. Hadron also allows us to grab a container value easily.
+The callback function can take route parameters as an argument. Hadron also allows us to grab a container value easily.
 
 ```javascript
 routeWithParam: {
@@ -72,12 +91,12 @@ hadron(expressApp, [
   container.register('sayHello', 'Hello World');
 });
 ```
-After sending a request to */* path, response will look like that:
+After sending a request to the*/* path, the response will look like that:
 ```
 "hadron says: Hello World"
 ```
 ---
-Hadron will first look for request parameters and next if not found any, it will look for value in container. So if you register a key **foo** in container and set the route param under the same name, it will inject param's value into callback's argument foo.
+Hadron will first look for request parameters and next if not found any, it will look for value in the container. So if you register a key **foo** in a container and set the route param under the same name, it will inject param's value into callback's argument foo.
 ```javascript
 container.register('foo', 'container');
 ```
