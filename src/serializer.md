@@ -12,7 +12,7 @@ Install **Serializer** module from npm
 and include it to hadron packages
 
 ```javascript
-  import * as hadronSerializer from '@brainhubeu/hadron-serializer';
+  const hadronSerializer = require('@brainhubeu/hadron-serializer');
 
   hadron(express, [
     // ...
@@ -41,7 +41,7 @@ That way, You should be able to get it from [Container](/core/#dependency-inject
 You can also use it without Container. Just import `serializerProvider` function from package and pass there Your [schemas](#schema) and parsers.
 
 ```javascript
-  import serializerProvider from '@brainhubeu/hadron-serializer';
+  const serializerProvider = require('@brainhubeu/hadron-serializer').default;
 
   const serializer = serializerProvider({
     schemas: mySchemas,
