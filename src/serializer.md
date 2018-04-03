@@ -55,7 +55,7 @@ You can also use it without Container. Just import `serializerProvider` function
 
 ## Configuration
 
-If You are using hadron application, You just need to add to it's config schamas and set of parsers:
+If You are using hadron application, You just need to add to it's config schemas and set of parsers:
 
 ```javascript
 const config = {
@@ -85,13 +85,13 @@ Serializer contain three methods.
     * `groups` - optional array of access [groups](#groups), on default `[]`
     * `schemaName` - name of schema, on default name of passed object
 - `addSchema(schemaObj)` - [schema](#schema) object we want to add
-- `addParser(parser, name)` - adds parser that can be used in schams, where:
+- `addParser(parser, name)` - adds parser that can be used in schemas, where:
     * `parser` is a method
     * `name` is name under which parser will be available
 
 ## Schema
 <div id="schema" />
-Schema is basic structure, that allows You to easily define your desired object. You can porovider them as `json` file. F.e.
+Schema is basic structure, that allows You to easily define your desired object. You can provider them as `json` file. F.e.
 
 ```json
 {
