@@ -5,7 +5,6 @@ pages:
     - Hadron core: core.md
     # - Good reason to use Hadron: reasons.md
     - Routing: routing.md
-    # - Events: events.md
     - Validation: validation.md
     - JSON Provider: json-provider.md
     - TypeORM: typeorm.md
