@@ -14,7 +14,7 @@ pages:
     # - CLI Console: cli.md
     # - Customize: customize.md
     # - Docker: docker.md
- 
+    - Serialize: serializer.md
 theme: readthedocs
 # docs_dir: /documents/src
 docs_dir: src
