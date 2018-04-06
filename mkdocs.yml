@@ -14,7 +14,7 @@ pages:
     # - Customize: customize.md
     # - Docker: docker.md
     - Serialize: serializer.md
-    - Event Manager: events-manager.md
+    - Event Manager: event-manager.md
  
  
 theme: readthedocs

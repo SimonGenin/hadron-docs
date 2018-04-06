@@ -1,8 +1,8 @@
-## Events Manager Overview
+##Overview
 
-Events Manager is a tool which allows manipulating hadron's default behavior without the need to change the code base. It can be achieved via custom 'listeners' defined by the developer. There are a bunch of extension points spread all over the hadron framework where listeners can be hooked up.
+Event Manager is a tool which allows manipulating hadron's default behavior without the need to change the code base. It can be achieved via custom 'listeners' defined by the developer. There are a bunch of extension points spread all over the hadron framework where listeners can be hooked up.
 
-### Events Manager installation
+### Installation
 Install **hadron-events-manager** package using npm
 ```bash
 $ npm install --save hadron-events-manager
@@ -18,15 +18,15 @@ import hadronEventsManager from 'hadron-events-manager'
 hadron(app, [
   hadronEventsManager
 ], config).then(container => {
-  console.log('Hadron with Hadron Events Manager initialized');
+  console.log('Hadron with Hadron Event Manager initialized');
 })
 ```
 
 An instance of Hadron Event Manager will sit in the container when **hadron-events-manager** package will be registered in hadron core.
 
-#Hadron Events Manager
+#Hadron Event Manager
 
-Hadron Events Manager instance has two methods on it:
+Hadron Event Manager instance has two methods on it:
 
 **registerEvents(listeners)**
 
