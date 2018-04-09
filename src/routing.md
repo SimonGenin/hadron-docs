@@ -1,6 +1,6 @@
 ## Installation
 
-INFO: Currently routing with hadron works only with an express framework.
+INFO: Currently routing with hadron works only with the Express framework.
 
 ```bash
 npm install @brainhubeu/hadron-express --save
