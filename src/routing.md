@@ -1,25 +1,21 @@
-
----
-**TODO**
-
-* Middlewares only refer to express.
-
----
-
 ### Express integration
 
 Currently routing with hadron works only with an express framework. We need to include hadron-express package while initializing hadron.
+
 ```javascript
-import * as bodyParser from 'body-parser';
-import * as express from 'express';
+const express = require('express');
+const bodyParser = require('body-parser');
 
 const port = process.env.PORT || 8080;
 const expressApp = express();
+
 expressApp.use(bodyParser.json());
 
-hadron(app, [
-  import('../hadron-express'),
-], config).then(container => {
+hadron(
+  expressApp,
+  [import('../hadron-express')],
+  config
+).then(container => {
   expressApp.listen(port);
 })
 ```
@@ -111,7 +107,11 @@ Respone for GET request */param* will look like this:
 ```
 "foo value: param"
 ```
+
 ### Middlewares
+
+Note: Currently middlewares only refer to express.
+
 Routing with hadron provides a middleware support. You need to pass array with middleware functions to a *middleware* key in route config.
 For example:
 ```javascript

@@ -1,12 +1,20 @@
-# Hadron core
-
 ## Installation
 
 - Install Node.js. We recommend using the latest version, installation details on [nodejs.org](https://nodejs.org)
-- Install `hadron-core`, `hadron-express` and `express` modules from npm (TODO):
+- Add private npm registry:
+
+```sh
+# Set registry:
+npm set registry http://npm.brainhub.pl
+
+# Add account (follow the steps required by command):
+npm adduser --registry  http://npm.brainhub.pl
+```
+
+- Install following modules from npm:
 
 ```bash
-npm install --save hadron-core hadron-express express
+npm install @brainhubeu/hadron-core @brainhubeu/hadron-express express --save
 ```
 
 ## Hello world app
@@ -14,8 +22,7 @@ npm install --save hadron-core hadron-express express
 Let's start with traditional Hello World app. It will give you a quick grasp of the framework.
 
 ```javascript
-const hadron = require('hadron-core').default;
-const hadronExpress = require('hadron-express');
+const hadron = require('@brainhubeu/hadron-core').default;
 const express = require('express');
 
 const port = 8080;
@@ -33,7 +40,7 @@ const config = {
 
 hadron(
   expressApp,
-  [Promise.resolve(hadronExpress)], // @todo - pass module without wrapping in a promise
+  [require('@brainhubeu/hadron-express')],
   config
 )
   .then(() => {
@@ -110,7 +117,7 @@ The method returns item or item instance according to item type and lifetime opt
 #### Example usage in bootstrapping function
 
 ```javascript
-const { default: hadron, Lifetime } = require('hadron-core');
+const { default: hadron, Lifetime } = require('hadron-core').default
 
 hadron(...args)
   .then((container) => {
