@@ -1,11 +1,14 @@
-To run documentation use:
+# Hadron documentation
+
+## Run via Docker
+
 ```sh
 docker build -t hadron-docs ./
 docker run --rm --name docs -p 8000:8000 -v /:/documents hadron-docs
 ```
 
-To run for development purpose (live reload):
+## Run locally (for development purpose):
 
-Install MkDocs locally: [installation](http://www.mkdocs.org/#installation)
+1. Install MkDocs locally: [installation](http://www.mkdocs.org/#installation)
 
-Run `mkdocs serve` and  inside `hadron-docs` folder.
+1. Run `mkdocs serve` and  inside `hadron-docs` folder.
