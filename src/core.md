@@ -62,7 +62,7 @@ hadron(
   serverInstance,
   [...packages],
   config
-)
+);
 ```
 
 The purpose of the main function is to initialize DI container and register package dependencies according to correspondent sections in config object (described in details in next chapters).
@@ -117,7 +117,7 @@ The method returns item or item instance according to item type and lifetime opt
 #### Example usage in bootstrapping function
 
 ```javascript
-const { default: hadron, Lifetime } = require('hadron-core').default
+const { default: hadron, Lifetime } = require('hadron-core');
 
 hadron(...args)
   .then((container) => {
