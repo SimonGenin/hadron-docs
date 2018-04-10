@@ -1,7 +1,5 @@
 ## Installation
 
-INFO: Currently routing with hadron works only with the Express framework.
-
 ```bash
 npm install @brainhubeu/hadron-validation --save
 ```
