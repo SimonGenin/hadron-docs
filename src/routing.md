@@ -142,7 +142,7 @@ Response for `GET` request */param* will look like this:
 
 ## Middlewares
 
-Note: Currently middlewares only refer to express.
+*Note: Currently middlewares only refer to express.*
 
 Routing with Hadron provides a middleware support. You need to pass array with middleware functions to a `middleware` key in route config.
 For example:

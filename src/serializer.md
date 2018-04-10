@@ -18,7 +18,7 @@ Pass package as argument for hadron bootstrapping function:
 // ... importing and initializing other components
 
 hadron(
-  serverApp,
+  expressApp,
   [require('@brainhubeu/hadron-serializer')],
   config
 );
