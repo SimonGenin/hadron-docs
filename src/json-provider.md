@@ -1,54 +1,62 @@
-#JSON Provider
+## Installation
 
-##What is JSON Provider?
-JSON Provider allows you to build a JSON object from files.  
-
-####Supported types:
-* **js**
-* **json**
-* **xml**
-
-##Installation
-Install **hadron-json-provider** module from npm (TODO)
 ```bash
-    $npm install --save hadron-json-provider
+npm install @brainhubeu/hadron-json-provider --save
 ```
 
-##Usage
-To use JSON Provider you need to pass array of strings which contains paths to files.
-Second argument is an array of strings which contains extensions of files from which you want to build an JSON object.
+[More info about installation](/core/#installation)
 
-##Example
-#### JSON Provider
+## What is JSON Provider?
 
-To find all files in **./routing/*\*/\*** with extension **config.js**
+JSON Provider allows you to automatically load multiple files as JSON object, with file names as object keys, and files data as object values.
+Currently we support following extensions:
+
+* `.js`
+* `.json`
+* `.xml`
+
+## Module functions
+
+### Basic provider
+
+```javascript
+jsonProvider(paths, extensions)
+```
+
+* `paths` - array of strings which contains paths to files
+* `extensions` - array of strings which contains extensions of files from which you want to build an JSON object
+
+For example, having directory with the following structure:
+
 ![Directory structure](img/routing.png)
 
-You can use **jsonProvider** function:
+To find all files in `./routing` and its sub-directories with extension `config.js` you can use following code:
+
 ```javascript
-    jsonProvider(['./routing/**/*'], ['config.js'])
-    .then(object => {
-        
-    }).catch(error => {
-
-    });
+jsonProvider(['./routing/**/*'], ['config.js'])
+  .then(object => {})
+  .catch(error => {});
 ```
-#### Configuration JSON Provider
 
-If you want to build configuration object which depends on project type, for example **development**
+### Configuration Provider
+
+```javascript
+configJsonProvider(paths, configFile, projectType, extensions)
+```
+
+* `paths` - array of strings which contains paths to files
+* `configFile` - name of main configuration file
+* `projectType` - project type
+* `extensions` - array of strings which contains extensions of files from which you want to build an JSON object
+
+For example, having directory with the following structure:
 
 ![Directory structure](img/routingType.png)
 
-You can use **configJsonProvider** function:
+If you want to build configuration object which depends on project type, for example `development` you can use following code
 
 ```javascript
-    configJsonProvider(['./app/config/*'], 'config', 'development', ['xml', 'js'])
-    .then(object => {
-
-    })
-    .catch(error => {
-
-    });
+configJsonProvider(['./app/config/*'], 'config', 'development', ['xml', 'js'])
+  .then(object => {})
+  .catch(error => {});
 ```
-
-First argument is string array of file paths, second argument is a name of main configuration file, third argument is a project type and the last argument is a string array of extensions.
