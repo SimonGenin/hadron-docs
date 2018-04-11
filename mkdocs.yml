@@ -5,7 +5,6 @@ pages:
     - Hadron core: core.md
     # - Good reason to use Hadron: reasons.md
     - Routing: routing.md
-    # - Events: events.md
     - Validation: validation.md
     - JSON Provider: json-provider.md
     - TypeORM: typeorm.md
@@ -15,6 +14,9 @@ pages:
     # - Customize: customize.md
     # - Docker: docker.md
     - Serialize: serializer.md
+    - Event Manager: event-manager.md
+ 
+ 
 theme: readthedocs
 # docs_dir: /documents/src
 docs_dir: src
