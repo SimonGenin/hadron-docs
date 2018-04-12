@@ -6,7 +6,7 @@ pages:
     # - Good reason to use Hadron: reasons.md
     - Routing: routing.md
     - Validation: validation.md
-    - Serializer: serializer.md
+    - Serialization: serialization.md
     - JSON Provider: json-provider.md
     - TypeORM: typeorm.md
     - Events: events.md
