@@ -1,12 +1,20 @@
-# Hadron core
-
 ## Installation
 
 - Install Node.js. We recommend using the latest version, installation details on [nodejs.org](https://nodejs.org)
-- Install `hadron-core`, `hadron-express` and `express` modules from npm (TODO):
+- Add private npm registry:
+
+```sh
+# Set registry:
+npm set registry http://npm.brainhub.pl
+
+# Add account (follow the steps required by command):
+npm adduser --registry  http://npm.brainhub.pl
+```
+
+- Install following modules from npm:
 
 ```bash
-npm install --save hadron-core hadron-express express
+npm install @brainhubeu/hadron-core @brainhubeu/hadron-express express --save
 ```
 
 ## Hello world app
@@ -14,8 +22,7 @@ npm install --save hadron-core hadron-express express
 Let's start with traditional Hello World app. It will give you a quick grasp of the framework.
 
 ```javascript
-const hadron = require('hadron-core').default;
-const hadronExpress = require('hadron-express');
+const hadron = require('@brainhubeu/hadron-core').default;
 const express = require('express');
 
 const port = 8080;
@@ -33,7 +40,7 @@ const config = {
 
 hadron(
   expressApp,
-  [Promise.resolve(hadronExpress)], // @todo - pass module without wrapping in a promise
+  [require('@brainhubeu/hadron-express')],
   config
 )
   .then(() => {
@@ -55,7 +62,7 @@ hadron(
   serverInstance,
   [...packages],
   config
-)
+);
 ```
 
 The purpose of the main function is to initialize DI container and register package dependencies according to correspondent sections in config object (described in details in next chapters).
@@ -94,7 +101,7 @@ container.register(key, item, lifetime)
 Lifetime options:
 
 - `'value'` - container returns registered item as is [default]
-- `'singletone'` - returns always the same instance of registered class / constructor function
+- `'singleton'` - returns always the same instance of registered class / constructor function
 - `'transient'` - returns always a new instance of registered class / constructor function
 
 #### Retrieving items
@@ -115,7 +122,7 @@ const { default: hadron, Lifetime } = require('hadron-core');
 hadron(...args)
   .then((container) => {
     container.register('foo', 123);
-    container.register('bar', class Bar {}, Lifetime.Singletone);
+    container.register('bar', class Bar {}, Lifetime.Singleton);
     container.register('baz', class Baz {}, Lifetime.Transient);
 
     // other stuff...

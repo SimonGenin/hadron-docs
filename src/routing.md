@@ -1,34 +1,41 @@
+## Installation
 
----
-**TODO**
+INFO: Currently routing with hadron works only with the Express framework.
 
-* Middlewares only refer to express.
+```bash
+npm install @brainhubeu/hadron-express --save
+```
 
----
+[More info about installation](/core/#installation)
 
-### Express integration
+## Express integration
 
-Currently routing with hadron works only with an express framework. We need to include hadron-express package while initializing hadron.
+We need to include `hadron-express` package while initializing hadron.
+
 ```javascript
-import * as bodyParser from 'body-parser';
-import * as express from 'express';
+const express = require('express');
+const bodyParser = require('body-parser');
 
 const port = process.env.PORT || 8080;
 const expressApp = express();
+
 expressApp.use(bodyParser.json());
 
-hadron(app, [
-  import('../hadron-express'),
-], config).then(container => {
+hadron(
+  expressApp,
+  [require('../hadron-express')],
+  config
+).then(container => {
   expressApp.listen(port);
 })
 ```
 
-### Basic routing setup
+## Basic routing setup
 
-To set up routes with Hadron, we are able to include them as objects in config object under key **routes**.
+To set up routes with Hadron, we are able to include them as objects in config object under key `routes`.
+
 ```javascript
-config = {
+const config = {
   routes: {
     helloWorldRoute: {
       callback: () ='Hello world !',
@@ -36,17 +43,18 @@ config = {
       path: '/',
     },
   },
-}
+};
 ```
-Basic, required structure of route object includes:
 
-* **callback**: function called when request is made, returned value will be send as a response.
-* **methods**: array of [HTTP methods](https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods).
-* **path**: route path.
+Basic, required structure of route config object includes:
 
-### Callback
+* `callback` - function called when request is made, returned value will be send as a response (except if you call `res` methods directly)
+* `methods` - array of [HTTP methods](https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods)
+* `path` - route path
 
-The callback function can take route parameters as an argument. Hadron also allows us to grab a container value easily.
+## Callback
+
+The callback function can take route parameters as an arguments. Hadron also allows us to grab a container value easily.
 
 ```javascript
 routeWithParam: {
@@ -55,12 +63,17 @@ routeWithParam: {
   path: '/:firstParam',
 }
 ```
-Using this simple example, if we send a request, for example *http://localhost/foobar* will provide a response as below:
-```
+
+Using this simple example, if we send a request, for example `http://localhost/foobar` will provide a response as below:
+
+```json
 "firstParam value: foobar"
-```  
+```
+
 ---
+
 When you would like to implement multiple route parameters, their order as arguments in callback does not matter, argument name needs only to match parameter name.
+
 ```javascript
 multipleParams: {
   callback: (secondParam, firstParam) =`${firstParam} ${secondParam}`,
@@ -68,38 +81,51 @@ multipleParams: {
   path: '/:firstParam/:secondParam',
 }
 ```
-GET request with path: *http://localhost/Hello/World* will result with following response:
-```
+
+GET request with path: `http://localhost/Hello/World` will result with following response:
+
+```json
 "Hello World"
 ```
-#### Retrieving items from container in callback
+
+## Retrieving items from container in callback
+
 Callback function provides a simple way to retrieve items from container with ease. Simply set item's key as callback function's argument. Let's see an example below:
+
 ```javascript
-hadron(expressApp, [
-  'hadron-express',
-], {
-  routes: {
-    routeWithContainerValue: {
-      // sayHello argument will refer to container value
-      callback: (sayHello) =`hadron says: ${sayHello}`,
-      methods: ['GET'],
-      path: '/',
-    },
+hadron(
+  expressApp,
+  [require('../hadron-express')],
+  {
+    routes: {
+      routeWithContainerValue: {
+        // sayHello argument will refer to container value
+        callback: (sayHello) =`hadron says: ${sayHello}`,
+        methods: ['GET'],
+        path: '/',
+      },
+    }
   }
-}).then(container ={
+).then(container => {
   // Register value under key sayHello
   container.register('sayHello', 'Hello World');
 });
 ```
-After sending a request to the*/* path, the response will look like that:
-```
+
+After sending a request to the `/` path, the response will look like that:
+
+```json
 "hadron says: Hello World"
 ```
+
 ---
-Hadron will first look for request parameters and next if not found any, it will look for value in the container. So if you register a key **foo** in a container and set the route param under the same name, it will inject param's value into callback's argument foo.
+
+Hadron will first look for request parameters and next if not found any, it will look for value in the container. So if you register a key `foo` in a container and set the route param under the same name, it will inject param's value into callback's argument foo.
+
 ```javascript
 container.register('foo', 'container');
 ```
+
 ```javascript
 exampleRoute: {
   callback: (foo) =`foo value: ${foo}`,
@@ -107,13 +133,20 @@ exampleRoute: {
   path: '/:foo',
 },
 ```
-Respone for GET request */param* will look like this:
-```
+
+Response for `GET` request */param* will look like this:
+
+```json
 "foo value: param"
 ```
-### Middlewares
-Routing with hadron provides a middleware support. You need to pass array with middleware functions to a *middleware* key in route config.
+
+## Middlewares
+
+*Note: Currently middlewares only refer to express.*
+
+Routing with Hadron provides a middleware support. You need to pass array with middleware functions to a `middleware` key in route config.
 For example:
+
 ```javascript
 middlewareExample: {
   callback: () => {
@@ -133,11 +166,15 @@ middlewareExample: {
   path: '/',
 },
 ```
-GET request to */* will log to the console following:
-```
+
+`GET` request to `/` will log to the console following:
+
+```sh
 First middleware
 Second middleware
 Callback function
 ```
-Middlewares take three arguments: **request**, **response** and **next**. First two are objects and third one - function which executed continues request flow.
-You can read more about middlewares in [express guide](https://expressjs.com/en/guide/using-middleware.html).
+
+Middlewares take three arguments: `request`, `response` and `next`. First two are objects and third one - function which executed continues request flow.
+
+You can read more about middlewares in [express guide](https://expressjs.com/en/guide/using-middleware.html)

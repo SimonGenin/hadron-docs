@@ -1,22 +1,20 @@
-site_name: Hadron.pro
+site_name: Hadron
 pages:
-    # - What is Hadron: index.md
+    - What is Hadron: index.md
     # - The technological benefits of Hadron: benefits.md
     - Hadron core: core.md
     # - Good reason to use Hadron: reasons.md
     - Routing: routing.md
     - Validation: validation.md
+    - Serializer: serializer.md
     - JSON Provider: json-provider.md
     - TypeORM: typeorm.md
+    - Events: events.md
     - How to test with Hadron: tests.md
     # - CRUD example app: example.md
     # - CLI Console: cli.md
     # - Customize: customize.md
     # - Docker: docker.md
-    - Serialize: serializer.md
-    - Event Manager: event-manager.md
- 
- 
 theme: readthedocs
 # docs_dir: /documents/src
 docs_dir: src
