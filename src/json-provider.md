@@ -6,7 +6,7 @@ npm install @brainhubeu/hadron-json-provider --save
 
 [More info about installation](/core/#installation)
 
-## What is JSON Provider?
+## Overview
 
 JSON Provider allows you to automatically load multiple files as JSON object, with file names as object keys, and files data as object values.
 Currently we support following extensions:

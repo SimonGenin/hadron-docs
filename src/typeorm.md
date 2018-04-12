@@ -8,7 +8,7 @@ npm install @brainhubeu/hadron-typeorm --save
 
 ## Initializing
 
-Pass package as argument for hadron bootstrapping function:
+Pass package as an argument for hadron bootstrapping function:
 
 ```javascript
 // ... importing and initializing other components

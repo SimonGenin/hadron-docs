@@ -5,11 +5,11 @@ pages:
     - Hadron core: core.md
     # - Good reason to use Hadron: reasons.md
     - Routing: routing.md
-    # - Events: events.md
     - Validation: validation.md
     - Serializer: serializer.md
     - JSON Provider: json-provider.md
     - TypeORM: typeorm.md
+    - Events: events.md
     - How to test with Hadron: tests.md
     # - CRUD example app: example.md
     # - CLI Console: cli.md

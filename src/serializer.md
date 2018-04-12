@@ -6,13 +6,13 @@ npm install @brainhubeu/hadron-serializer --save
 
 [More info about installation](/core/#installation)
 
-## What is Serializer?
-Serializer allows You to quickly and easy shape and parse data way You want it. You just need to create schema (in json file, or as simple object) and You are ready to go!
+## Overview
 
+Serializer allows You to quickly and easy shape and parse data way You want it. You just need to create schema (in json file, or as simple object) and You are ready to go!s
 
 ## Initializing as Hadron package
 
-Pass package as argument for hadron bootstrapping function:
+Pass package as an argument for hadron bootstrapping function:
 
 ```javascript
 // ... importing and initializing other components

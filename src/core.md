@@ -101,7 +101,7 @@ container.register(key, item, lifetime)
 Lifetime options:
 
 - `'value'` - container returns registered item as is [default]
-- `'singletone'` - returns always the same instance of registered class / constructor function
+- `'singleton'` - returns always the same instance of registered class / constructor function
 - `'transient'` - returns always a new instance of registered class / constructor function
 
 #### Retrieving items
@@ -122,7 +122,7 @@ const { default: hadron, Lifetime } = require('hadron-core');
 hadron(...args)
   .then((container) => {
     container.register('foo', 123);
-    container.register('bar', class Bar {}, Lifetime.Singletone);
+    container.register('bar', class Bar {}, Lifetime.Singleton);
     container.register('baz', class Baz {}, Lifetime.Transient);
 
     // other stuff...
