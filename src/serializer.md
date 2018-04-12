@@ -65,7 +65,7 @@ If You are using hadron application, You just need to add to it's config schemas
 ```javascript
 const config = {
   // ...
-  serialization: {
+  serializer: {
     schemas: [ ... ],
     parser: [ ... ],
   }
