@@ -1,7 +1,7 @@
 ## Installation
 
 ```bash
-npm install @brainhubeu/hadron-serializer --save
+npm install @brainhubeu/hadron-serialization --save
 ```
 
 [More info about installation](/core/#installation)
@@ -19,7 +19,7 @@ Pass package as an argument for hadron bootstrapping function:
 
 hadron(
   expressApp,
-  [require('@brainhubeu/hadron-serializer')],
+  [require('@brainhubeu/hadron-serialization')],
   config
 );
 ```
@@ -47,7 +47,7 @@ serializer.serialize(data);
 Just import `serializerProvider` function from package and pass there Your [schemas](#schema) and parsers.
 
 ```javascript
-const serializerProvider = require('@brainhubeu/hadron-serializer');
+const serializerProvider = require('@brainhubeu/hadron-serialization');
 
 const serializer = serializerProvider({
   schemas: mySchemas,
