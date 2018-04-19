@@ -91,14 +91,14 @@ DI container instance is created and used internally by bootstrapping function, 
 #### Registering items
 
 ```javascript
-container.register(key, item, lifetime)
+container.register(key, item, lifecycle)
 ```
 
 - `key` - item name on which it will be registered inside the container
 - `item` - any value (primitive, data structure, function, class, etc.)
-- `lifetime` - the type of item's life-span
+- `lifecycle` - the type of item's life-span
 
-Lifetime options:
+Lifecycle options:
 
 - `'value'` - container returns registered item as is [default]
 - `'singleton'` - returns always the same instance of registered class / constructor function
@@ -112,18 +112,18 @@ container.take(key)
 
 - `key` - item name (same as provided during registration)
 
-The method returns item or item instance according to item type and lifetime option.
+The method returns item or item instance according to item type and lifecycle option.
 
 #### Example usage in bootstrapping function
 
 ```javascript
-const { default: hadron, Lifetime } = require('hadron-core');
+const { default: hadron, Lifecycle } = require('hadron-core');
 
 hadron(...args)
   .then((container) => {
     container.register('foo', 123);
-    container.register('bar', class Bar {}, Lifetime.Singleton);
-    container.register('baz', class Baz {}, Lifetime.Transient);
+    container.register('bar', class Bar {}, Lifecycle.Singleton);
+    container.register('baz', class Baz {}, Lifecycle.Transient);
 
     // other stuff...
   })
