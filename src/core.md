@@ -131,6 +131,6 @@ hadron(...args)
 
 ### Accessing container items from routes' callbacks
 
-To access container items from callbacks, you can just set arguments' names to match container keys, and required dependency will be provided.
+To access container items from callbacks, you can just destructure second argument of the callback with needed key name. Second argument of the callback is a Proxy object providing easy access to container items.
 
 See an example [here](../routing/#retrieving-items-from-container-in-callback)

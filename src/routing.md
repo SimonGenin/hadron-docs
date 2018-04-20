@@ -18,6 +18,7 @@ const bodyParser = require('body-parser');
 
 const port = process.env.PORT || 8080;
 const expressApp = express();
+const config = {/* config */}
 
 expressApp.use(bodyParser.json());
 
@@ -48,97 +49,278 @@ const config = {
 
 Basic, required structure of route config object includes:
 
-* `callback` - function called when request is made, returned value will be send as a response (except if you call `res` methods directly)
+* `callback` - function called when request is made, you can either return response specification or primitive value which will be used as response body
 * `methods` - array of [HTTP methods](https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods)
 * `path` - route path
 
 ## Callback
 
-The callback function can take route parameters as an arguments. Hadron also allows us to grab a container value easily.
+The callback function has the following structure:
 
 ```javascript
-routeWithParam: {
-  callback: (firstParam) =`firstParam value: ${firstParam}`,
-  methods: ['GET'],
-  path: '/:firstParam',
+const callback = (request, dependencies) = {
+  // ... response reparation
+  return responseSpec;
+};
+```
+
+* `request` - Hadron request object, its a simple data structure without methods, with the following keys:
+    * `body` - request body
+    * `file` or `files` - files processed by file middleware
+    * `headers` - object with headers names as keys and headers data as values, all headers names are lowercase
+    * `locals` - custom variables per request
+    * `params` - url params array
+    * `query` - url querystring params array
+
+* `dependencies` - proxy object which internally calls `container.take(key)` when you try to access its keys
+
+* `responseSpec` - object that you should return from callback function, it describes desired result and is internally used to generate response, can have following fields (all keys are optional):
+    * `status` - HTTP numeric status - defaults to `200` or `302` (on redirection)
+    * `redirect` - redirection url
+    * `headers` - object with headers names as keys and headers data as values
+    * `body` - response body - defaults to `{}`
+    * `view` - object describing view to return (requires registered view engine), has following keys:
+        * `name` - name of the view file inside `views` folder (required)
+        * `bindings` - view bindings (optional)
+
+You should always return unequivocal `responseSpec` object with none or one of `body`/`view`/`redirect` keys.
+
+You can return primitive value directly - in that case it will be used as response body.
+
+## Example callbacks
+
+*Note: For simplicity we are not showing whole route config in examples below, but take notice that all `callback` functions listed below should be registered under `callback` key in route config*
+
+### Simplest callback
+
+If you don't need to access values from request object or DI container you can omit both callback parameters, you can also use shortcut of the `responseSpec` if returned value is a primitive one, for example:
+
+```javascript
+const callback = () => 'Hello!';
+```
+
+will respond with body:
+
+```json
+"Hello!"
+```
+
+and status `200`
+
+### Callback with non-primitive response body
+
+To avoid ambiguity you should always return responseSpec if body is non-primitive one:
+
+```javascript
+const callback = () => {
+  return {
+    body: {
+      message: 'Hello!',
+    },
+  },
+};
+```
+
+will respond with body:
+
+```json
+{
+  "message": "Hello!",
 }
 ```
 
-Using this simple example, if we send a request, for example `http://localhost/foobar` will provide a response as below:
+and status `200`
 
-```json
-"firstParam value: foobar"
-```
+### Callback with custom status and headers
 
----
-
-When you would like to implement multiple route parameters, their order as arguments in callback does not matter, argument name needs only to match parameter name.
+You can explicitly specify response status as well as additional headers:
 
 ```javascript
-multipleParams: {
-  callback: (secondParam, firstParam) =`${firstParam} ${secondParam}`,
-  methods: ['GET'],
-  path: '/:firstParam/:secondParam',
+const callback = () => {
+  return {
+    status: 201,
+    headers: {
+      'my-header': 'some value'
+    },
+    body: {
+      id: 1,
+    },
+  },
+};
+```
+
+will respond with body:
+
+```json
+{
+  "id": 1,
 }
 ```
 
-GET request with path: `http://localhost/Hello/World` will result with following response:
+with status `201` and additional header
 
-```json
-"Hello World"
-```
+### Callback with redirection
 
-## Retrieving items from container in callback
-
-Callback function provides a simple way to retrieve items from container with ease. Simply set item's key as callback function's argument. Let's see an example below:
+You can also redirect user to another page:
 
 ```javascript
+const callback = () => {
+  return {
+    redirect: '//google.com'
+  },
+};
+```
+
+it will redirect user to Google's page with its default protocol: `https://google.com`
+
+### Callback returning rendered view
+
+You can install and register view rendering engine in your underlying Express app, for example:
+
+```sh
+npm install ejs --save
+```
+
+```javascript
+const express = require('express');
+const bodyParser = require('body-parser');
+
+const port = process.env.PORT || 8080;
+const expressApp = express();
+const config = {/* config */}
+
+expressApp.set('view engine', 'ejs'); // <- here
+expressApp.use(bodyParser.json());
+
 hadron(
   expressApp,
   [require('../hadron-express')],
-  {
-    routes: {
-      routeWithContainerValue: {
-        // sayHello argument will refer to container value
-        callback: (sayHello) =`hadron says: ${sayHello}`,
-        methods: ['GET'],
-        path: '/',
-      },
-    }
-  }
+  config
 ).then(container => {
-  // Register value under key sayHello
-  container.register('sayHello', 'Hello World');
-});
+  expressApp.listen(port);
+})
 ```
 
-After sending a request to the `/` path, the response will look like that:
+Default views folder should be named `views` and be placed in project's main folder, lets add simple view:
 
-```json
-"hadron says: Hello World"
+```html
+<!-- my-projects/views/hello.ejs -->
+<p>Hello <%= user %>!</p>
 ```
 
----
-
-Hadron will first look for request parameters and next if not found any, it will look for value in the container. So if you register a key `foo` in a container and set the route param under the same name, it will inject param's value into callback's argument foo.
+Now we can set route with callback view specification:
 
 ```javascript
-container.register('foo', 'container');
+const callback = () => {
+  return {
+    view: {
+      name: 'hello',
+      bindings: { user: 'Stranger' }
+    },
+  },
+};
 ```
+
+It will respond with html:
+
+```html
+<p>Hello Stranger!</p>
+```
+
+with status `200`
+
+### Callback with usage of request object
+
+Request object is passed as a first argument to callback function, you can use it directly or destructure needed items, lets say that we have route that looks like this:
+
+```sh
+/items/:id?details=<boolean>
+```
+
+Now we can easy access route parameters and query items:
 
 ```javascript
-exampleRoute: {
-  callback: (foo) =`foo value: ${foo}`,
-  methods: ['GET'],
-  path: '/:foo',
-},
+const callback = (req) => {
+  return {
+    body: {
+      itemId: Number(req.params.id),
+      details: Boolean(req.query.details)
+    },
+  },
+};
 ```
 
-Response for `GET` request */param* will look like this:
+or:
+
+```javascript
+const callback = ({ params, query }) => {
+  return {
+    body: {
+      itemId: Number(params.id),
+      details: Boolean(query.details)
+    },
+  },
+};
+```
+
+When we call a route like this: `/items/1?details=true`, it will respond with body:
 
 ```json
-"foo value: param"
+{
+  "itemId": 1,
+  "details": true,
+}
 ```
+
+and status `200`
+
+### Callback with usage of container items
+
+Lets assume that we registered two items in DI container:
+
+```javascript
+container.register('foo', 'baz');
+container.register('bar', 'bat');
+```
+
+We can access them via second argument of the callback:
+
+```javascript
+const callback = (req, dependencies) => {
+  return {
+    body: {
+      foo: dependencies.foo,
+      bar: dependencies.bar,
+    },
+  },
+};
+```
+
+or:
+
+```javascript
+const callback = (req, { foo, bar }) => {
+  return {
+    body: {
+      foo,
+      bar,
+    },
+  },
+};
+```
+
+It will respond with body:
+
+```json
+{
+  "foo": "baz",
+  "bar": "bat"
+}
+```
+
+and status `200`
+
+*Note: If you try to list all available dependencies (for example via `Object.keys(dependencies)`) it will return an empty array - that's because second argument is a Proxy object which prevents direct access to DI container. You should always refer to specific keys, either via `dependencies[key]` or via destructuring.*
 
 ## Middlewares
 
