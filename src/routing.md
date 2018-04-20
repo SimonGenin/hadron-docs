@@ -87,6 +87,8 @@ You should always return unequivocal `responseSpec` object with none or one of `
 
 You can return primitive value directly - in that case it will be used as response body.
 
+Response spec can be also wrapped in Promise - framework will automatically wait till promise is resolved.
+
 ## Example callbacks
 
 *Note: For simplicity we are not showing whole route config in examples below, but take notice that all `callback` functions listed below should be registered under `callback` key in route config*
@@ -321,6 +323,52 @@ It will respond with body:
 and status `200`
 
 *Note: If you try to list all available dependencies (for example via `Object.keys(dependencies)`) it will return an empty array - that's because second argument is a Proxy object which prevents direct access to DI container. You should always refer to specific keys, either via `dependencies[key]` or via destructuring.*
+
+### Callback with asynchronous code
+
+Lets assume that DI container contains repository that returns results as a promise:
+
+```javascript
+const repository = {
+  byId(id) {
+    return Promise.resolve({ id: '1', name: 'Stranger' })
+  }
+}
+
+container.register('usersRepository', repository);
+```
+
+We can return response spec as a promise:
+
+```javascript
+const callback = (req, { usersRepository }) => {
+  return usersRepository.byId(1)
+    .then(user => ({
+      body: user.name
+    }));
+};
+```
+
+or with async-await:
+
+```javascript
+const callback = async (req, { usersRepository }) => {
+  const user = await usersRepository.byId(1);
+
+  return {
+    body: user.name
+  };
+};
+```
+
+It will respond with body:
+
+```json
+"Stranger"
+```
+
+and status `200`
+
 
 ## Middlewares
 
