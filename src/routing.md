@@ -375,6 +375,7 @@ and status `200`
 *Note: Currently middlewares only refer to express.*
 
 Routing with Hadron provides a middleware support. You need to pass array with middleware functions to a `middleware` key in route config.
+
 For example:
 
 ```javascript
