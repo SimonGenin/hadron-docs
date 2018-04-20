@@ -49,7 +49,7 @@ const config = {
 
 Basic, required structure of route config object includes:
 
-* `callback` - function called when request is made, you can either return response specification or primitive value which will be used as response body
+* `callback` - function called when the request is made, you can either return response specification or primitive value which will be used as the response body
 * `methods` - array of [HTTP methods](https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods)
 * `path` - route path
 
@@ -85,23 +85,23 @@ const callback = (request, dependencies) = {
 
 You should always return unequivocal `responseSpec` object with none or one of `body`/`view`/`redirect` keys.
 
-You can return primitive value directly - in that case it will be used as response body.
+You can return primitive value directly - in that case, it will be used as the response body.
 
 Response spec can be also wrapped in Promise - framework will automatically wait till promise is resolved.
 
 ## Example callbacks
 
-*Note: For simplicity we are not showing whole route config in examples below, but take notice that all `callback` functions listed below should be registered under `callback` key in route config*
+*Note: For simplicity, we are not showing whole route config in examples below, but take notice that all `callback` functions listed below should be registered under `callback` key in route config*
 
 ### Simplest callback
 
-If you don't need to access values from request object or DI container you can omit both callback parameters, you can also use shortcut of the `responseSpec` if returned value is a primitive one, for example:
+If you don't need to access values from request object or DI container you can omit both callback parameters, you can also use the shortcut of the `responseSpec` if the returned value is a primitive one, for example:
 
 ```javascript
 const callback = () => 'Hello!';
 ```
 
-will respond with body:
+will respond with a body:
 
 ```json
 "Hello!"
@@ -111,7 +111,7 @@ and status `200`
 
 ### Callback with non-primitive response body
 
-To avoid ambiguity you should always return responseSpec if body is non-primitive one:
+To avoid ambiguity you should always return responseSpec if the body is non-primitive one:
 
 ```javascript
 const callback = () => {
@@ -123,7 +123,7 @@ const callback = () => {
 };
 ```
 
-will respond with body:
+will respond with a body:
 
 ```json
 {
@@ -151,7 +151,7 @@ const callback = () => {
 };
 ```
 
-will respond with body:
+will respond with a body:
 
 ```json
 {
@@ -163,7 +163,7 @@ with status `201` and additional header
 
 ### Callback with redirection
 
-You can also redirect user to another page:
+You can also redirect the user to another page:
 
 ```javascript
 const callback = () => {
@@ -173,7 +173,7 @@ const callback = () => {
 };
 ```
 
-it will redirect user to Google's page with its default protocol: `https://google.com`
+it will redirect the user to Google's page with its default protocol: `https://google.com`
 
 ### Callback returning rendered view
 
@@ -231,15 +231,15 @@ It will respond with html:
 
 with status `200`
 
-### Callback with usage of request object
+### Callback with the request object
 
-Request object is passed as a first argument to callback function, you can use it directly or destructure needed items, lets say that we have route that looks like this:
+The request object is passed as the first argument to the callback function. You can use it directly or destructure needed items. Let's say that we have a route that looks like this:
 
 ```sh
 /items/:id?details=<boolean>
 ```
 
-Now we can easy access route parameters and query items:
+Now we can easily access route parameters and query items:
 
 ```javascript
 const callback = (req) => {
@@ -265,7 +265,7 @@ const callback = ({ params, query }) => {
 };
 ```
 
-When we call a route like this: `/items/1?details=true`, it will respond with body:
+When we call a route like this: `/items/1?details=true`, it will respond with a body:
 
 ```json
 {
@@ -276,7 +276,7 @@ When we call a route like this: `/items/1?details=true`, it will respond with bo
 
 and status `200`
 
-### Callback with usage of container items
+### Callback with the usage of container items
 
 Lets assume that we registered two items in DI container:
 
@@ -285,7 +285,7 @@ container.register('foo', 'baz');
 container.register('bar', 'bat');
 ```
 
-We can access them via second argument of the callback:
+We can access them via the second argument of the callback:
 
 ```javascript
 const callback = (req, dependencies) => {
@@ -311,7 +311,7 @@ const callback = (req, { foo, bar }) => {
 };
 ```
 
-It will respond with body:
+It will respond with a body:
 
 ```json
 {
@@ -322,11 +322,11 @@ It will respond with body:
 
 and status `200`
 
-*Note: If you try to list all available dependencies (for example via `Object.keys(dependencies)`) it will return an empty array - that's because second argument is a Proxy object which prevents direct access to DI container. You should always refer to specific keys, either via `dependencies[key]` or via destructuring.*
+*Note: If you try to list all available dependencies (for example via `Object.keys(dependencies)`) it will return an empty array - that's because the second argument is a Proxy object which prevents direct access to DI container. You should always refer to specific keys, either via `dependencies[key]` or via destructuring.*
 
 ### Callback with asynchronous code
 
-Lets assume that DI container contains repository that returns results as a promise:
+Let's assume that DI container contains repository that returns results as a promise:
 
 ```javascript
 const repository = {
@@ -361,7 +361,7 @@ const callback = async (req, { usersRepository }) => {
 };
 ```
 
-It will respond with body:
+It will respond with a body:
 
 ```json
 "Stranger"
@@ -374,7 +374,7 @@ and status `200`
 
 *Note: Currently middlewares only refer to express.*
 
-Routing with Hadron provides a middleware support. You need to pass array with middleware functions to a `middleware` key in route config.
+Routing with Hadron provides middleware support. You need to pass an array with middleware functions to a `middleware` key in route config.
 
 For example:
 

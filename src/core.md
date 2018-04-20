@@ -124,4 +124,4 @@ hadron(...args)
 
 To access container items from callbacks, you can use second argument of the callback which contains a Proxy object providing easy access to container items.
 
-See an example [here](../routing/#callback-with-usage-of-container-items)
+See an example [here](../routing/#callback-with-the-usage-of-container-items)
