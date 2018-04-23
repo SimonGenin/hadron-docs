@@ -56,7 +56,7 @@ const connection = createDatabaseConnection(
 
 ## Including database connection in hadron
 
-*NOTE: Also events aren't included in this section so logging into the console is done using setTimeout.*
+*Note: Also events aren't included in this section so logging into the console is done using setTimeout.*
 
 Since we have our connection, we need to include it inside our hadron constructor's config object. It actually accepts array of connections.
 

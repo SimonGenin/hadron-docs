@@ -1,15 +1,6 @@
 ## Installation
 
 - Install Node.js. We recommend using the latest version, installation details on [nodejs.org](https://nodejs.org)
-- Add private npm registry:
-
-```sh
-# Set registry:
-npm set registry http://npm.brainhub.pl
-
-# Add account (follow the steps required by command):
-npm adduser --registry  http://npm.brainhub.pl
-```
 
 - Install following modules from npm:
 
@@ -131,6 +122,6 @@ hadron(...args)
 
 ### Accessing container items from routes' callbacks
 
-To access container items from callbacks, you can just set arguments' names to match container keys, and required dependency will be provided.
+To access container items from callbacks, you can use second argument of the callback which contains a Proxy object providing easy access to container items.
 
-See an example [here](../routing/#retrieving-items-from-container-in-callback)
+See an example [here](../routing/#callback-with-the-usage-of-container-items)
