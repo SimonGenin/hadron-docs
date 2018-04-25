@@ -115,7 +115,7 @@ const fetchUser = async ({ params }, { userRepository }) => {
       return {
         status: 400,
         body: {
-          message: "User not found"
+          message: `User with id ${params.id} not found`
         }
       };
     }
@@ -130,6 +130,7 @@ Test code:
 ```javascript
 import { expect } from "chai";
 import { fetchUser } from "./user";
+import { UserNotFoundError } from "./errors";
 
 describe("fetchUser request handler", () => {
   it("returns response spec with user data", async () => {
@@ -154,6 +155,33 @@ describe("fetchUser request handler", () => {
       body: {
         id: 1,
         name: "Stranger"
+      }
+    };
+
+    const actual = await fetchUser(requestStub, dependenciesStub);
+
+    return expect(actual).to.deep.equal(expected);
+  });
+
+  it("returns response spec with error when there is no user with provided ID", async () => {
+    const requestStub = {
+      params: {
+        id: 1
+      }
+    };
+
+    const dependenciesStub = {
+      userRepository: {
+        byId(id) {
+          return Promise.reject(new UserNotFoundError());
+        }
+      }
+    };
+
+    const expected = {
+      status: 400,
+      body: {
+        message: "User with id 1 not found"
       }
     };
 
