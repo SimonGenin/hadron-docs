@@ -17,7 +17,7 @@ Let's start with a simple controller with no external dependencies and no reques
 Code under test:
 
 ```javascript
-const getAboutPage = () => {
+export const getAboutPage = () => {
   return {
     view: {
       name: "about"
@@ -54,7 +54,7 @@ On next simple example we test dumb handler that echos request parameters. To te
 Code under test:
 
 ```javascript
-const echo = ({ params, query }) => {
+export const echo = ({ params, query }) => {
   return {
     body: { params, query }
   };
@@ -105,7 +105,7 @@ Code under test:
 ```javascript
 import { UserNotFoundError } from "./errors";
 
-const fetchUser = async ({ params }, { userRepository }) => {
+export const fetchUser = async ({ params }, { userRepository }) => {
   try {
     return {
       body: await userRepository.byId(params.id)
@@ -129,7 +129,7 @@ Test code:
 
 ```javascript
 import { expect } from "chai";
-import { fetchUser } from "./user";
+import { fetchUser } from "./userHandlers";
 import { UserNotFoundError } from "./errors";
 
 describe("fetchUser request handler", () => {
@@ -188,6 +188,69 @@ describe("fetchUser request handler", () => {
     const actual = await fetchUser(requestStub, dependenciesStub);
 
     return expect(actual).to.deep.equal(expected);
+  });
+});
+```
+
+---
+
+In the last example besides returning response spec we will perform some side effect and test that it was called. For that we will use spy. Instead of writing our own spy we will use the one included in Sinon.JS.
+
+Code under test:
+
+```javascript
+export const fetchUsers = async (req, { userRepository, logger }) => {
+  const users = await userRepository.all();
+
+  logger.info(`Fetched ${users.length} users`);
+
+  return {
+    body: users
+  };
+};
+```
+
+Test code:
+
+```javascript
+import { expect } from "chai";
+import { fetchUsers } from "./userHandlers";
+import sinon from "sinon";
+
+describe("fetchUsers request handler", () => {
+  const dependenciesStub = {
+    userRepository: {
+      all() {
+        return Promise.resolve([
+          { id: 1, name: "Stranger1" },
+          { id: 2, name: "Stranger2" },
+          { id: 3, name: "Stranger3" }
+        ]);
+      }
+    },
+    logger: {
+      info: sinon.spy()
+    }
+  };
+
+  it("returns response spec with users data", async () => {
+    const expected = {
+      body: [
+        { id: 1, name: "Stranger1" },
+        { id: 2, name: "Stranger2" },
+        { id: 3, name: "Stranger3" }
+      ]
+    };
+
+    const actual = await fetchUsers({}, dependenciesStub);
+
+    expect(actual).to.deep.equal(expected);
+  });
+
+  it("calls logger with result info", async () => {
+    await fetchUsers({}, dependenciesStub);
+
+    expect(dependenciesStub.logger.info.calledWith('Fetched 3 users')).to.be.true;
   });
 });
 ```
