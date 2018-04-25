@@ -41,7 +41,8 @@ describe("getAboutPage request handler", () => {
     };
 
     const actual = getAboutPage();
-    expect(actual).to.equal(expected);
+
+    expect(actual).to.deep.equal(expected);
   });
 });
 ```
@@ -67,8 +68,8 @@ import { expect } from "chai";
 import { echo } from "./dumbHandlers";
 
 describe("echo request handler", () => {
-  it("returns response spec with proper view", () => {
-    const request = {
+  it("returns response spec provided params", () => {
+    const requestStub = {
       params: {
         foo: "bar"
       },
@@ -88,10 +89,78 @@ describe("echo request handler", () => {
       }
     };
 
-    const actual = echo(request);
-  });
+    const actual = echo(requestStub);
 
-  expect(actual).to.equal(expected);
+    expect(actual).to.deep.equal(expected);
+  });
+});
+```
+
+---
+
+Another example will request callback that returns specific entity selected by id provided by user as request param. We will stub repository and test for correct response spec. We will also cover case when there is no entity witch such ID.
+
+Code under test:
+
+```javascript
+import { UserNotFoundError } from "./errors";
+
+const fetchUser = async ({ params }, { userRepository }) => {
+  try {
+    return {
+      body: await userRepository.byId(params.id)
+    };
+  } catch (error) {
+    if (error instanceof UserNotFoundError) {
+      return {
+        status: 400,
+        body: {
+          message: "User not found"
+        }
+      };
+    }
+
+    throw error;
+  }
+};
+```
+
+Test code:
+
+```javascript
+import { expect } from "chai";
+import { fetchUser } from "./user";
+
+describe("fetchUser request handler", () => {
+  it("returns response spec with user data", async () => {
+    const requestStub = {
+      params: {
+        id: 1
+      }
+    };
+
+    const dependenciesStub = {
+      userRepository: {
+        byId(id) {
+          return Promise.resolve({
+            id,
+            name: "Stranger"
+          });
+        }
+      }
+    };
+
+    const expected = {
+      body: {
+        id: 1,
+        name: "Stranger"
+      }
+    };
+
+    const actual = await fetchUser(requestStub, dependenciesStub);
+
+    return expect(actual).to.deep.equal(expected);
+  });
 });
 ```
 
