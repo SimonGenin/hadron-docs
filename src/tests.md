@@ -303,11 +303,9 @@ defineSupportCode(function({ When, Then }) {
 ```
 
 'this' variable is new for each scenario, so you can use it as a data storage for a single scenario.
-We now have our steps defined, so we can use them in our feature:
-
+Then we define our scenarios:
 ```
 // test.features
-
 
 Feature: test
     Scenario: scenario1
@@ -320,6 +318,20 @@ Feature: test
 ```
 
 As you might guess, the second scenario will cause an error.
+
+To run cucumber with examples above you will need to install and configure babel:
+run ```npm i babel-register babel-preset-env --save-dev``` and create `.babelrc` file in root directory of your project and paste the following code inside:
+
+```
+{
+  "presets": [
+    "env"
+  ]
+}
+
+```
+
+To run cucumber simply type ```./node_modules/cucumber/bin/cucumber.js --compiler js:babel-register```
 
 ---
 ### End-to-end with Hadron
