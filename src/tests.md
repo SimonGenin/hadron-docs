@@ -257,17 +257,17 @@ describe("fetchUsers request handler", () => {
 
 ## Integration tests
 
+
 ## End-to-end tests
 
-To perform end-to-end test wee will use library called Cucumber.
-<br>
-##Cucumber introduction
+To perform end-to-end test we will use a library called Cucumber.
+### Cucumber introduction
 
-Cucumber allows us to create our tests in really nice looking manner by making so-called features, scenarios and steps.<br>
+Cucumber allows us to create our tests in a really nice looking manner by making so-called features, scenarios and steps.<br>
 Every feature consists of multiple(at least one) scenarios and each scenario has multiple steps.<br>
-Scenario is a stand alone test case.<br>
-Step is definied by user piece of code which is invoked by typing before specified phrase into the scenarios.<br>
-Tests should be stored in files with .feature extenstion.<br>
+A scenario is a stand-alone test case.<br>
+A step is defined by user piece of code which is invoked by typing before specified phrase into the scenarios.<br>
+Tests should be stored in files with .feature extension.<br>
 
 Let's assume we want to create a test for function which adds two numbers together:
 
@@ -276,7 +276,7 @@ const add = (number1, number2) => number1 + number2
 ```
 
 Now, let's create our Cucumber steps. To do so, we need to import ```defineSupportCode``` function from cucumber
-and optionally, any assertion library, in this example i will use chai.js.
+and optionally, any assertion library, in this example I will use chai.js.
 
 ```javascript
 import { defineSupportCode } from 'cucumber';
@@ -300,8 +300,8 @@ defineSupportCode(function({ When, Then }) {
 })
 ```
 
-'this' variable is new for each scenario, so you can use it as a data storage for single scenario.
-We now have our steps definied, so we can use them in our feature:
+'this' variable is new for each scenario, so you can use it as a data storage for a single scenario.
+We now have our steps defined, so we can use them in our feature:
 
 ```
 // test.features
@@ -318,13 +318,14 @@ Feature: test
 ```
 
 As you might guess, the second scenario will cause an error.
-<br>
-## End-to-end with Hadron
-Hadron comes with prepared Cucumber steps which allows to send HTTP requests(with headers and body)
+
+---
+### End-to-end with Hadron
+Hadron comes with prepared Cucumber steps which allow sending HTTP requests(with headers and body)
 and check for responses
 
-Initial setup consist of steps.ts under /step_definitions directory which is obligatory to use HTTP Requests
-and mock.ts which is a HTTP Client and which is also obligatory.
+The initial setup consists of steps.ts under /step_definitions directory which is obligatory to use HTTP Requests
+and mock.ts which is an HTTP Client and which is also obligatory.
 
 You can define your custom steps anywhere under /features directory.
 
@@ -332,8 +333,9 @@ To run end to end tests, use this command in terminal:
 ```
 $ npm run test:e2e
 ```
-<br>
-##Ready to use steps:
+
+---
+### Ready to use steps:
 * **Given**
 
 Setting header values
@@ -371,7 +373,7 @@ When I send a "METHOD" request to "/path" with body:
   """
 
 ex.
-When i send a "PUT" request to "/users/add"
+When I send a "PUT" request to "/users/add"
   """
   {
     "firstname": "John",
