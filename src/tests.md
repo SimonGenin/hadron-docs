@@ -265,7 +265,7 @@ To install Cucumber simply type ```npm i cucumber@3.1.0 --save-dev``` in your pr
 
 ### Cucumber introduction
 
-Cucumber allows us to create our tests in a really nice looking manner by making so-called features, scenarios and steps.<br>
+Cucumber allows us to create our tests in a really nice looking manner by making so-called features, scenarios and steps.
 Every feature consists of multiple(at least one) scenarios and each scenario has multiple steps.
 A scenario is a stand-alone test case.
 A step is defined by user piece of code which is invoked by typing before specified phrase into the scenarios.
