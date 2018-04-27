@@ -259,14 +259,81 @@ describe("fetchUsers request handler", () => {
 
 ## End-to-end tests
 
-To run end to end tests, use this command in terminal:
+To perform end-to-end test wee will use library called Cucumber.
+<br>
+##Cucumber introduction
 
-```sh
-npm run test:e2e
+Cucumber allows us to create our tests in really nice looking manner by making so-called features, scenarios and steps.<br>
+Every feature consists of multiple(at least one) scenarios and each scenario has multiple steps.<br>
+Scenario is a stand alone test case.<br>
+Step is definied by user piece of code which is invoked by typing before specified phrase into the scenarios.<br>
+Tests should be stored in files with .feature extenstion.<br>
+
+Let's assume we want to create a test for function which adds two numbers together:
+
+```javascript
+const add = (number1, number2) => number1 + number2
 ```
 
-### Scenarios
+Now, let's create our Cucumber steps. To do so, we need to import ```defineSupportCode``` function from cucumber
+and optionally, any assertion library, in this example i will use chai.js.
 
+```javascript
+import { defineSupportCode } from 'cucumber';
+import { expect } from 'chai';
+```
+
+And then our 'steps' definition:
+
+```javascript
+
+defineSupportCode(function({ When, Then }) {
+
+  When('add {int} to {int}', function(number1, number2, next) {
+    this.result = add(number1, number2);
+    next();
+  });
+
+  Then('the result is {int}', function(result) {
+    expect(this.result).to.equal(result);
+  });
+})
+```
+
+'this' variable is new for each scenario, so you can use it as a data storage for single scenario.
+We now have our steps definied, so we can use them in our feature:
+
+```
+// test.features
+
+
+Feature: test
+    Scenario: scenario1
+        When add 1 to 2
+        Then the result is 3
+
+    Scenario: scenario2
+        When add 3 to 1
+        Then the result is 56
+```
+
+As you might guess, the second scenario will cause an error.
+<br>
+## End-to-end with Hadron
+Hadron comes with prepared Cucumber steps which allows to send HTTP requests(with headers and body)
+and check for responses
+
+Initial setup consist of steps.ts under /step_definitions directory which is obligatory to use HTTP Requests
+and mock.ts which is a HTTP Client and which is also obligatory.
+
+You can define your custom steps anywhere under /features directory.
+
+To run end to end tests, use this command in terminal:
+```
+$ npm run test:e2e
+```
+<br>
+##Ready to use steps:
 * **Given**
 
 Setting header values
@@ -331,7 +398,7 @@ Then the JSON should match pattern
     "name": "Wonderful coffee",
     "project": {
       "name": "Coffee"
-    }
+    }sss
   }
   """
 ```
