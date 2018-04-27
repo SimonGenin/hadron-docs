@@ -260,6 +260,7 @@ describe("fetchUsers request handler", () => {
 ## End-to-end tests
 
 To perform end-to-end test wee will use library called Cucumber.
+<br>
 ##Cucumber introduction
 
 Cucumber allows us to create our tests in really nice looking manner by making so-called features, scenarios and steps.<br>
@@ -317,6 +318,7 @@ Feature: test
 ```
 
 As you might guess, the second scenario will cause an error.
+<br>
 ## End-to-end with Hadron
 Hadron comes with prepared Cucumber steps which allows to send HTTP requests(with headers and body)
 and check for responses
@@ -330,6 +332,7 @@ To run end to end tests, use this command in terminal:
 ```
 $ npm run test:e2e
 ```
+<br>
 ##Ready to use steps:
 * **Given**
 
@@ -395,7 +398,7 @@ Then the JSON should match pattern
     "name": "Wonderful coffee",
     "project": {
       "name": "Coffee"
-    }sss
+    }
   }
   """
 ```
