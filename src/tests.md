@@ -260,14 +260,16 @@ describe("fetchUsers request handler", () => {
 
 ## End-to-end tests
 
-To perform end-to-end test we will use a library called Cucumber.
+To perform end-to-end test we will use a Cucumber library in version 3.1.0.
+To install Cucumber simply type ```npm i cucumber@3.1.0 --save-dev``` in your project folder.
+
 ### Cucumber introduction
 
 Cucumber allows us to create our tests in a really nice looking manner by making so-called features, scenarios and steps.<br>
-Every feature consists of multiple(at least one) scenarios and each scenario has multiple steps.<br>
-A scenario is a stand-alone test case.<br>
-A step is defined by user piece of code which is invoked by typing before specified phrase into the scenarios.<br>
-Tests should be stored in files with .feature extension.<br>
+Every feature consists of multiple(at least one) scenarios and each scenario has multiple steps.
+A scenario is a stand-alone test case.
+A step is defined by user piece of code which is invoked by typing before specified phrase into the scenarios.
+Tests should be stored in files with .feature extension.
 
 Let's assume we want to create a test for function which adds two numbers together:
 
@@ -289,9 +291,9 @@ And then our 'steps' definition:
 
 defineSupportCode(function({ When, Then }) {
 
-  When('add {int} to {int}', function(number1, number2, next) {
+  When('add {int} to {int}', function(number1, number2, nextStep) {
     this.result = add(number1, number2);
-    next();
+    nextStep();
   });
 
   Then('the result is {int}', function(result) {
@@ -321,21 +323,54 @@ As you might guess, the second scenario will cause an error.
 
 ---
 ### End-to-end with Hadron
-Hadron comes with prepared Cucumber steps which allow sending HTTP requests(with headers and body)
-and check for responses
 
-The initial setup consists of steps.ts under /step_definitions directory which is obligatory to use HTTP Requests
-and mock.ts which is an HTTP Client and which is also obligatory.
+To test Hadron we will use package `cucumber-steps` from `brainhubeu` repository which comes with prepared Cucumber steps for sending HTTP requests and receiving responses.
 
-You can define your custom steps anywhere under /features directory.
+To install package mentioned above, type ```npm i git+https://github.com/brainhubeu/cucumber-steps.git --save-dev``` in your project folder.
 
-To run end to end tests, use this command in terminal:
+#### cucumber-steps setup
+
+To use cucumber-steps properly, you should create following directory structure under your project root directory: 
 ```
-$ npm run test:e2e
+|── features 
+    |---step_definitions
+    |      |---steps.js
+    |---support
+    |      |--- hooks
+    |         |---http.js
+```    
+
+The initial setup consists of `/features/steps_definitions/steps.js` which is obligatory to activate package
+and `/features/support/hooks/http.js` which is an HTTP Client and which is also obligatory.
+
+```javascript
+// steps.js
+import { defineSupportCode } from 'cucumber';
+import stepsSupport from 'cucumber-steps';
+
+defineSupportCode(stepsSupport);
+
 ```
+
+```javascript
+// http.js
+import { defineSupportCode } from 'cucumber';
+import * as superagent from 'superagent';
+import { Client } from 'cucumber-steps';
+
+defineSupportCode(function({ Before }) {
+  Before(function(scenarioResult) {
+    this.client = new Client(superagent);
+    this.client.setHost('http://localhost:' + 8080);
+  });
+});
+```
+
+You can define your custom steps anywhere under `/features` directory.
+
 
 ---
-### Ready to use steps:
+### cucumber-steps functionalities
 * **Given**
 
 Setting header values
