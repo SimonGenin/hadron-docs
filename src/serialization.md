@@ -4,7 +4,7 @@
 npm install @brainhubeu/hadron-serialization --save
 ```
 
-[More info about installation](/core/#installation)
+[More info about installation](http://hadron-docs.dev.brainhub.pl/core/#installation)
 
 ## Overview
 
@@ -17,14 +17,10 @@ Pass package as an argument for hadron bootstrapping function:
 ```javascript
 // ... importing and initializing other components
 
-hadron(
-  expressApp,
-  [require('@brainhubeu/hadron-serialization')],
-  config
-);
+hadron(expressApp, [require('@brainhubeu/hadron-serialization')], config);
 ```
 
-That way, You should be able to get it from [Container](/core/#dependency-injection) like that:
+That way, You should be able to get it from [Container](http://hadron-docs.dev.brainhub.pl/core/#dependency-injection) like that:
 
 ```javascript
 const serializer = container.take('serializer');
@@ -86,7 +82,7 @@ interface ISerializerConfig {
 Serializer contain three methods.
 
 ```javascript
-serialize(data, groups, schemaName)
+serialize(data, groups, schemaName);
 ```
 
 * `data` - object we want to serialize
@@ -94,13 +90,13 @@ serialize(data, groups, schemaName)
 * `schemaName` - name of schema, on default name of passed object
 
 ```javascript
-addSchema(schemaObj)
+addSchema(schemaObj);
 ```
 
 * `schemaObj` - [schema](#schema) object we want to add
 
 ```javascript
-addParser(parser, name)
+addParser(parser, name);
 ```
 
 Adds parser that can be used in schemas, where:
@@ -114,21 +110,26 @@ Schema is basic structure, that allows You to easily define your desired object.
 
 ```json
 {
-    "name": "User",
-    "properties": [
+  "name": "User",
+  "properties": [
+    { "name": "name", "type": "string" },
+    { "name": "address", "type": "string", "groups": ["admin"] },
+    {
+      "name": "money",
+      "type": "number",
+      "parsers": ["currency"],
+      "groups": ["admin"]
+    },
+    {
+      "name": "friends",
+      "type": "array",
+      "properties": [
         { "name": "name", "type": "string" },
-        { "name": "address", "type": "string", "groups": ["admin"] },
-        { "name": "money", "type": "number", "parsers": ["currency"], "groups": ["admin"]},
-        {
-            "name": "friends",
-            "type": "array",
-            "properties": [
-                { "name": "name", "type": "string" },
-                { "name": "profession", "type": "string", "groups": ["admin"] },
-                { "name": "salary", "type": "number", "parsers": ["currency"] }
-            ]
-        }
-    ]
+        { "name": "profession", "type": "string", "groups": ["admin"] },
+        { "name": "salary", "type": "number", "parsers": ["currency"] }
+      ]
+    }
+  ]
 }
 ```
 

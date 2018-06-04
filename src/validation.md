@@ -22,7 +22,7 @@ To use validation layer, first you need to provide some schemas. We use JSON Sch
     },
     "age": {
       "type": "number"
-    },
+    }
   },
   "required": ["name", "age"],
   "additionalProperties": false
@@ -73,14 +73,16 @@ After you created validate function with **hadron validator factory** you can us
 ```js
 const validObject = {
   name: 'Max',
-  age: 22
+  age: 22,
 };
 
-validate('schemaName', objectToValidate).then(validObject => {
-  console.log('I am a valid object', validObject);
-}).catch(error => {
-  console.log('Object is invalid', error);
-});
+validate('schemaName', objectToValidate)
+  .then((validObject) => {
+    console.log('I am a valid object', validObject);
+  })
+  .catch((error) => {
+    console.log('Object is invalid', error);
+  });
 ```
 
 Validate function passes valid object, otherwise it throws an error.

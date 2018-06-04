@@ -20,7 +20,7 @@ Currently we support following extensions:
 ### Basic provider
 
 ```javascript
-jsonProvider(paths, extensions)
+jsonProvider(paths, extensions);
 ```
 
 * `paths` - array of strings which contains paths to files
@@ -34,14 +34,14 @@ To find all files in `./routing` and its sub-directories with extension `config.
 
 ```javascript
 jsonProvider(['./routing/**/*'], ['config.js'])
-  .then(object => {})
-  .catch(error => {});
+  .then((object) => {})
+  .catch((error) => {});
 ```
 
 ### Configuration Provider
 
 ```javascript
-configJsonProvider(paths, configFile, projectType, extensions)
+configJsonProvider(paths, configFile, projectType, extensions);
 ```
 
 * `paths` - array of strings which contains paths to files
@@ -57,6 +57,6 @@ If you want to build configuration object which depends on project type, for exa
 
 ```javascript
 configJsonProvider(['./app/config/*'], 'config', 'development', ['xml', 'js'])
-  .then(object => {})
-  .catch(error => {});
+  .then((object) => {})
+  .catch((error) => {});
 ```

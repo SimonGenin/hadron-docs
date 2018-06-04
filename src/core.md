@@ -1,8 +1,8 @@
 ## Installation
 
-- Install Node.js. We recommend using the latest version, installation details on [nodejs.org](https://nodejs.org)
+* Install Node.js. We recommend using the latest version, installation details on [nodejs.org](https://nodejs.org)
 
-- Install following modules from npm:
+* Install following modules from npm:
 
 ```bash
 npm install @brainhubeu/hadron-core @brainhubeu/hadron-express express --save
@@ -29,15 +29,11 @@ const config = {
   },
 };
 
-hadron(
-  expressApp,
-  [require('@brainhubeu/hadron-express')],
-  config
-)
-  .then(() => {
-    expressApp
-      .listen(port, () => console.log(`Listening on http://localhost:${port}`));
-  });
+hadron(expressApp, [require('@brainhubeu/hadron-express')], config).then(() => {
+  expressApp.listen(port, () =>
+    console.log(`Listening on http://localhost:${port}`),
+  );
+});
 ```
 
 In the sections below, we will describe step by step what just happened.
@@ -49,11 +45,7 @@ The main hadron-core function is responsible for bootstrapping the app. It regis
 ```javascript
 const hadron = require('hadron-core').default;
 
-hadron(
-  serverInstance,
-  [...packages],
-  config
-);
+hadron(serverInstance, [...packages], config);
 ```
 
 The purpose of the main function is to initialize DI container and register package dependencies according to correspondent sections in config object (described in details in next chapters).
@@ -61,12 +53,11 @@ The purpose of the main function is to initialize DI container and register pack
 Main function returns a promise that resolves to created DI container instance. In the promise `.then()` method, besides performing operations on the container instance, we can actually start our server, by calling Express `listen` method:
 
 ```javascript
-hadron(serverInstance, ...rest)
-  .then((container) => {
-    // do some things on container...
+hadron(serverInstance, ...rest).then((container) => {
+  // do some things on container...
 
-    serverInstance.listen(PORT, callback)
-  })
+  serverInstance.listen(PORT, callback);
+});
 ```
 
 Now, let's move to DI container itself.
@@ -82,46 +73,45 @@ DI container instance is created and used internally by bootstrapping function, 
 #### Registering items
 
 ```javascript
-container.register(key, item, lifecycle)
+container.register(key, item, lifetime);
 ```
 
-- `key` - item name on which it will be registered inside the container
-- `item` - any value (primitive, data structure, function, class, etc.)
-- `lifecycle` - the type of item's life-span
+* `key` - item name on which it will be registered inside the container
+* `item` - any value (primitive, data structure, function, class, etc.)
+* `lifetime` - the type of item's life-span
 
-Lifecycle options:
+Lifetime options:
 
-- `'value'` - container returns registered item as is [default]
-- `'singleton'` - returns always the same instance of registered class / constructor function
-- `'transient'` - returns always a new instance of registered class / constructor function
+* `'value'` - container returns registered item as is [default]
+* `'singleton'` - returns always the same instance of registered class / constructor function
+* `'transient'` - returns always a new instance of registered class / constructor function
 
 #### Retrieving items
 
 ```javascript
-container.take(key)
+container.take(key);
 ```
 
-- `key` - item name (same as provided during registration)
+* `key` - item name (same as provided during registration)
 
-The method returns item or item instance according to item type and lifecycle option.
+The method returns item or item instance according to item type and lifetime option.
 
 #### Example usage in bootstrapping function
 
 ```javascript
-const { default: hadron, Lifecycle } = require('hadron-core');
+const { default: hadron, Lifetime } = require('hadron-core');
 
-hadron(...args)
-  .then((container) => {
-    container.register('foo', 123);
-    container.register('bar', class Bar {}, Lifecycle.Singleton);
-    container.register('baz', class Baz {}, Lifecycle.Transient);
+hadron(...args).then((container) => {
+  container.register('foo', 123);
+  container.register('bar', class Bar {}, Lifetime.Singleton);
+  container.register('baz', class Baz {}, Lifetime.Transient);
 
-    // other stuff...
-  })
+  // other stuff...
+});
 ```
 
 ### Accessing container items from routes' callbacks
 
-To access container items from callbacks, you can use second argument of the callback which contains a Proxy object providing easy access to container items.
+To access container items from callbacks, you can just set arguments' names to match container keys, and required dependency will be provided.
 
-See an example [here](../routing/#callback-with-the-usage-of-container-items)
+See an example [here](../routing/#retrieving-items-from-container-in-callback)

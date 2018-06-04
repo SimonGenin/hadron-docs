@@ -17,13 +17,9 @@ Pass package as an argument for hadron bootstrapping function:
 ```javascript
 // ... importing and initializing other components
 
-hadron(
-  expressApp,
-  [require('@brainhubeu/hadron-events')],
-  config
-).then(() => {
-  console.log('Hadron with eventManager initialized')
-})
+hadron(expressApp, [require('@brainhubeu/hadron-events')], config).then(() => {
+  console.log('Hadron with eventManager initialized');
+});
 ```
 
 After initialization you can retrieve event manager from DI container - it is registered under the key `eventManager`.
@@ -33,7 +29,7 @@ After initialization you can retrieve event manager from DI container - it is re
 ### Registering listeners for events
 
 ```javascript
-eventManager.registerEvents(listeners)
+eventManager.registerEvents(listeners);
 ```
 
 * `listeners` - an array of objects which have to follow convention showed below:
@@ -49,7 +45,7 @@ eventManager.registerEvents(listeners)
 ### Emitting events
 
 ```javascript
-eventManager.emitEvent(eventName)
+eventManager.emitEvent(eventName);
 ```
 
 Calls all listeners handlers registered for the event with event name passed to it.
