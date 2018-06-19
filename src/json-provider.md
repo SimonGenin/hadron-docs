@@ -8,14 +8,15 @@ npm install @brainhubeu/hadron-json-provider --save
 
 ## Overview
 
-JSON Provider allows you to automatically load multiple files as JSON object, with file names as object keys, and files data as object values.
-Currently we support following extensions:
+JSON Provider allows you to automatically load multiple files as a JSON object, with file names as object keys, and file contents as object values.
+
+Currently it supports the following extensions:
 
 * `.js`
 * `.json`
 * `.xml`
 
-## Module functions
+## Usage
 
 ### Basic provider
 
@@ -24,13 +25,13 @@ jsonProvider(paths, extensions);
 ```
 
 * `paths` - array of strings which contains paths to files
-* `extensions` - array of strings which contains extensions of files from which you want to build an JSON object
+* `extensions` - array of strings which contains extensions of files out of which which you want to build a JSON object
 
-For example, having directory with the following structure:
+For example, consider a directory with the following structure:
 
 ![Directory structure](img/routing.png)
 
-To find all files in `./routing` and its sub-directories with extension `config.js` you can use following code:
+To find all files in `./routing` and its sub-directories with the extension `config.js` you can use the following code:
 
 ```javascript
 jsonProvider(['./routing/**/*'], ['config.js'])
@@ -38,22 +39,22 @@ jsonProvider(['./routing/**/*'], ['config.js'])
   .catch((error) => {});
 ```
 
-### Configuration Provider
+### Configuration provider
 
 ```javascript
 configJsonProvider(paths, configFile, projectType, extensions);
 ```
 
 * `paths` - array of strings which contains paths to files
-* `configFile` - name of main configuration file
+* `configFile` - name of the main configuration file
 * `projectType` - project type
-* `extensions` - array of strings which contains extensions of files from which you want to build an JSON object
+* `extensions` - array of strings which contains extensions of files out of which you want to build a JSON object
 
-For example, having directory with the following structure:
+For example, consider a directory with the following structure:
 
 ![Directory structure](img/routingType.png)
 
-If you want to build configuration object which depends on project type, for example `development` you can use following code
+If you want to build a configuration object which depends on the project type, for example `development`, you can use the following code:
 
 ```javascript
 configJsonProvider(['./app/config/*'], 'config', 'development', ['xml', 'js'])

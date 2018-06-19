@@ -8,11 +8,11 @@ npm install @brainhubeu/hadron-events --save
 
 ## Overview
 
-Event Manager is a tool which allows manipulating Hadron's default behavior without the need to change the code base. It can be achieved via custom listeners defined by the developer. There are a bunch of extension points spread all over the hadron framework where listeners can be hooked up.
+Event Manager is a tool which allows for manipulating Hadron's default behavior without the need to change the code base. It can be achieved via custom listeners defined by the developer. There are a bunch of extension points spread all over the Hadron framework where listeners can be hooked up.
 
 ## Initializing
 
-Pass package as an argument for hadron bootstrapping function:
+Pass the package as an argument for Hadron bootstrapping function:
 
 ```javascript
 const hadronEvents = require('@brainhubeu/hadron-events');
@@ -23,7 +23,7 @@ hadron(expressApp, [hadronEvents], config).then(() => {
 });
 ```
 
-After initialization you can retrieve event manager from DI container - it is registered under the key `eventManager`.
+After initialization you can retrieve the event manager from the DI container - it is registered under the key `eventManager`.
 
 ## Event Manager methods
 
@@ -33,7 +33,7 @@ After initialization you can retrieve event manager from DI container - it is re
 eventManager.registerEvents(listeners);
 ```
 
-* `listeners` - an array of objects which have to follow convention showed below:
+* `listeners` - an array of objects which have to follow the convention shown below:
 
 ```javascript
 {
@@ -86,7 +86,7 @@ hadron(app, [hadronEvents], config).then((container) => {
 eventEmitter.emitEvent(eventName);
 ```
 
-Calls all listeners handlers registered for the event with event name passed to it.
+Calls all listener handlers registered for the event with event name passed to it.
 
 * `eventName` - name of the event which will be fired
 
@@ -94,13 +94,13 @@ Calls all listeners handlers registered for the event with event name passed to 
 
 You can create your listeners in the main config file.
 
-As a first argument listener's handler method will receive a callback function originally called by hadron, so you can change/override it however you want and then return a call of newly created function or a call of existing callback if you don't want to change it.
+As the first argument listener's handler method will receive a callback function originally called by hadron, so you can change/override it however you want and then return a call of a newly created function or a call of an existing callback if you don't want to change it.
 
-To be able to receive callback mentioned above, the first argument should be named exactly `callback`, otherwise, you will not receive the callback.
+To be able to receive the callback mentioned above, the first argument should be named exactly `callback`, otherwise, you will not receive the callback.
 
-You can also, define your listener's handler without `callback` argument or even without any arguments, which is also a valid way to create listeners, you just won't be able to access the callback.
+You can also define your listener's handler without `callback` argument or even without any arguments, which is also a valid way to create listeners, you just won't be able to access the callback.
 
-The second argument of listeners handler method is `...args`, which can be used as arguments for the callback function.
+The second argument of the listener's handler method is `...args`, which can be used as arguments for the callback function.
 
 An example of a listener:
 
@@ -118,16 +118,16 @@ An example of a listener:
 }
 ```
 
-## Extension points in hadron
+## Extension points in Hadron
 
-As said before, there are a couple of extension points in the hadron framework to which you can hook up your listeners.
-The extension depends from packages that You are using and are listed below:
+As said before, there are a couple of extension points in the Hadron framework to which you can hook up your listeners.
+The extension depends on the packages that you are using and are listed below:
 
 --- hadron-express
 
 `HANDLE_REQUEST_CALLBACK_EVENT`
 
-Event fires, before route callback function is called, passes route callback to the listener.
+Event fires before a route callback function is called. Passes the route callback to the listener.
 
 Example:
 
@@ -149,7 +149,7 @@ const listeners = [
 
 `HANDLE_TERMINATE_APPLICATION_EVENT`
 
-Event fires when the application is terminated with <kbd>CTRL</kbd> + <kbd>C</kbd>, passes default hadron callback to the listener.
+Event fires when the application is terminated with <kbd>CTRL</kbd> + <kbd>C</kbd>, passes the default Hadron callback to the listener.
 
 ```javascript
 const Event = require('@brainhubeu/hadron-events').Event;

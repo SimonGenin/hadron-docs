@@ -6,13 +6,13 @@ There is nothing special about testing application logic so we won't address thi
 
 ### Testing controllers (route callbacks)
 
-Hadron makes it easy to unit test your controllers - your input request data is just a data structure, as well as returned request specification (optionally wrapped in promise). You can also easily stub your dependencies by providing fake dependencies as object as a second argument of the controller.
+Hadron makes it easy to unit test your controllers - your input request data is just a data structure, as well as the returned request specification (optionally wrapped in a promise). You can also easily stub your dependencies by providing fake dependencies as objects in the second argument of the controller.
 
 _Note: For our examples we will use Mocha + Chai_
 
 ---
 
-Let's start with a simple controller with no external dependencies and no request specific data - for example request for a specific view i.e. `/about`.
+Let's start with a simple controller with no external dependencies and no request-specific data - for example request for a specific view i.e. `/about`.
 
 Code under test:
 
@@ -49,7 +49,7 @@ describe("getAboutPage request handler", () => {
 
 ---
 
-On next simple example we test dumb handler that echos request parameters. To test it in isolation all we need to do is to pass fake request structure and compare the result.
+In the next simple example we test a dumb handler that echos request parameters. To test it in isolation all we need to do is to pass a fake request structure and compare the result.
 
 Code under test:
 
@@ -98,7 +98,7 @@ describe("echo request handler", () => {
 
 ---
 
-Another example will request callback that returns specific entity selected by id provided by user as request param. We will stub repository and test for correct response spec. We will also cover case when there is no entity witch such ID.
+In another example we will request a callback that returns a specific entity selected by id provided by user in the request param. We will stub repository and test for the correct response spec. We will also cover the case when there is no entity with such an ID.
 
 Code under test:
 
@@ -194,7 +194,7 @@ describe("fetchUser request handler", () => {
 
 ---
 
-In the last example besides returning response spec we will perform some side effect and test that it was called. For that we will use spy. Instead of writing our own spy we will use the one included in Sinon.JS.
+In the last example in addition to returning the response spec we will perform a side effect and test that it was called. For that we will use spy. Instead of writing our own spy we will use the one included in Sinon.JS.
 
 Code under test:
 
