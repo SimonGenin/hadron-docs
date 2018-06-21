@@ -1,6 +1,6 @@
 ## Installation
 
-INFO: Currently routing with hadron works only with the Express framework.
+INFO: Routing with hadron currently works only with the Express framework.
 
 ```bash
 npm install @brainhubeu/hadron-express --save
@@ -10,7 +10,7 @@ npm install @brainhubeu/hadron-express --save
 
 ## Express integration
 
-We need to include `hadron-express` package while initializing hadron.
+We need to include the `hadron-express` package while initializing Hadron.
 
 ```javascript
 const express = require('express');
@@ -33,7 +33,7 @@ hadron(
 
 ## Basic routing setup
 
-To set up routes with Hadron, we are able to include them as objects in config object under key `routes`.
+When setting up routes with Hadron, we are able to include them as objects in the config object under the key `routes`.
 
 ```javascript
 const config = {
@@ -47,7 +47,7 @@ const config = {
 };
 ```
 
-Basic, required structure of route config object includes:
+The required properties of a route config object include:
 
 * `callback` - function called when the request is made, you can either return response specification or primitive value which will be used as the response body
 * `methods` - array of [HTTP methods](https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods)
@@ -67,51 +67,51 @@ const callback = (request, dependencies) = {
 * `request` - Hadron request object, its a simple data structure without methods, with the following keys:
     * `body` - request body
     * `file` or `files` - files processed by file middleware
-    * `headers` - object with headers names as keys and headers data as values, all headers names are lowercase
+    * `headers` - object with header names as keys and header data as values, all header names are lowercase
     * `locals` - custom variables per request
     * `params` - url params array
     * `query` - url querystring params array
 
 * `dependencies` - proxy object which internally calls `container.take(key)` when you try to access its keys
 
-* `responseSpec` - object that you should return from callback function, it describes desired result and is internally used to generate response, can have following fields (all keys are optional):
+* `responseSpec` - object that you should return from the callback function, it is used to generate a response, it can have following fields (all keys are optional):
     * `status` - HTTP numeric status - defaults to `200` or `302` (on redirection)
     * `redirect` - redirection url
-    * `headers` - object with headers names as keys and headers data as values
+    * `headers` - object with header names as keys and header data as values
     * `body` - response body - defaults to `{}`
-    * `view` - object describing view to return (requires registered view engine), has following keys:
-        * `name` - name of the view file inside `views` folder (required)
+    * `view` - object describing the view to return (requires a registered view engine), has the following keys:
+        * `name` - name of the view file inside the `views` folder (required)
         * `bindings` - view bindings (optional)
 
-You should always return unequivocal `responseSpec` object with none or one of `body`/`view`/`redirect` keys.
+You should always return an unequivocal `responseSpec` object with none or one of `body`/`view`/`redirect` keys.
 
-You can return primitive value directly - in that case, it will be used as the response body.
+You can return a primitive value directly - in that case, it will be used as the response body.
 
-Response spec can be also wrapped in Promise - framework will automatically wait till promise is resolved.
+Response spec can be also wrapped in a promise - framework will automatically wait till the promise is resolved.
 
 ## Example callbacks
 
-*Note: For simplicity, we are not showing whole route config in examples below, but take notice that all `callback` functions listed below should be registered under `callback` key in route config*
+*Note: For simplicity, we are not showing the whole route config in the examples below, but take notice that all `callback` functions listed below should be registered under `callback` key in route config*
 
 ### Simplest callback
 
-If you don't need to access values from request object or DI container you can omit both callback parameters, you can also use the shortcut of the `responseSpec` if the returned value is a primitive one, for example:
+If you don't need to access values from the request object or the DI container you can omit both callback parameters, you can also use the shorthand `responseSpec` if the returned value is primitive, for example:
 
 ```javascript
 const callback = () => 'Hello!';
 ```
 
-will respond with a body:
+Will respond with a body:
 
 ```json
 "Hello!"
 ```
 
-and status `200`
+And status `200`.
 
-### Callback with non-primitive response body
+### Callback with a non-primitive response body
 
-To avoid ambiguity you should always return responseSpec if the body is non-primitive one:
+To avoid ambiguity you should always return `responseSpec` if the body is a non-primitive one:
 
 ```javascript
 const callback = () => {
@@ -123,7 +123,7 @@ const callback = () => {
 };
 ```
 
-will respond with a body:
+Will respond with a body:
 
 ```json
 {
@@ -131,11 +131,11 @@ will respond with a body:
 }
 ```
 
-and status `200`
+and status `200`.
 
 ### Callback with custom status and headers
 
-You can explicitly specify response status as well as additional headers:
+You can explicitly specify the response status as well as additional headers:
 
 ```javascript
 const callback = () => {
@@ -151,7 +151,7 @@ const callback = () => {
 };
 ```
 
-will respond with a body:
+Will respond with a body:
 
 ```json
 {
@@ -159,7 +159,7 @@ will respond with a body:
 }
 ```
 
-with status `201` and additional header
+With status `201` and an additional header:
 
 ### Callback with redirection
 
@@ -173,11 +173,11 @@ const callback = () => {
 };
 ```
 
-it will redirect the user to Google's page with its default protocol: `https://google.com`
+It will redirect the user to Google with its default protocol: `https://google.com`.
 
-### Callback returning rendered view
+### Callback returning a rendered view
 
-You can install and register view rendering engine in your underlying Express app, for example:
+You can install and register a view rendering engine in your underlying Express app, for example:
 
 ```sh
 npm install ejs --save
@@ -203,14 +203,14 @@ hadron(
 })
 ```
 
-Default views folder should be named `views` and be placed in project's main folder, lets add simple view:
+The default views folder should be named `views` and be placed in the project's main folder. Let's add a simple view:
 
 ```html
 <!-- my-projects/views/hello.ejs -->
 <p>Hello <%= user %>!</p>
 ```
 
-Now we can set route with callback view specification:
+Now we can set a route with a view specification returned from the callback:
 
 ```javascript
 const callback = () => {
@@ -229,7 +229,7 @@ It will respond with html:
 <p>Hello Stranger!</p>
 ```
 
-with status `200`
+With status `200`.
 
 ### Callback with the request object
 
@@ -239,7 +239,7 @@ The request object is passed as the first argument to the callback function. You
 /items/:id?details=<boolean>
 ```
 
-Now we can easily access route parameters and query items:
+Now we can easily access the route parameters and query items:
 
 ```javascript
 const callback = (req) => {
@@ -252,7 +252,7 @@ const callback = (req) => {
 };
 ```
 
-or:
+Or:
 
 ```javascript
 const callback = ({ params, query }) => {
@@ -274,11 +274,11 @@ When we call a route like this: `/items/1?details=true`, it will respond with a 
 }
 ```
 
-and status `200`
+And status `200`.
 
-### Callback with the usage of container items
+### Callback using container items
 
-Lets assume that we registered two items in DI container:
+Lets assume that we registered two items in the DI container:
 
 ```javascript
 container.register('foo', 'baz');
@@ -298,7 +298,7 @@ const callback = (req, dependencies) => {
 };
 ```
 
-or:
+Or:
 
 ```javascript
 const callback = (req, { foo, bar }) => {
@@ -320,13 +320,13 @@ It will respond with a body:
 }
 ```
 
-and status `200`
+And status `200`.
 
 *Note: If you try to list all available dependencies (for example via `Object.keys(dependencies)`) it will return an empty array - that's because the second argument is a Proxy object which prevents direct access to DI container. You should always refer to specific keys, either via `dependencies[key]` or via destructuring.*
 
 ### Callback with asynchronous code
 
-Let's assume that DI container contains repository that returns results as a promise:
+Let's assume that the DI container contains a repository that returns a promise:
 
 ```javascript
 const repository = {
@@ -338,7 +338,7 @@ const repository = {
 container.register('usersRepository', repository);
 ```
 
-We can return response spec as a promise:
+We can return the response spec as a promise, too:
 
 ```javascript
 const callback = (req, { usersRepository }) => {
@@ -349,7 +349,7 @@ const callback = (req, { usersRepository }) => {
 };
 ```
 
-or with async-await:
+Or with async-await:
 
 ```javascript
 const callback = async (req, { usersRepository }) => {
@@ -367,10 +367,10 @@ It will respond with a body:
 "Stranger"
 ```
 
-and status `200`
+And status `200`.
 
 
-## Middlewares
+## Middleware
 
 *Note: Currently middlewares only refer to express.*
 
@@ -398,7 +398,7 @@ middlewareExample: {
 },
 ```
 
-`GET` request to `/` will log to the console following:
+`GET` request to `/` will log the following to the console:
 
 ```sh
 First middleware
@@ -406,6 +406,6 @@ Second middleware
 Callback function
 ```
 
-Middlewares take three arguments: `request`, `response` and `next`. First two are objects and third one - function which executed continues request flow.
+Middleware functions take three arguments: `request`, `response` and `next`. First two are objects and third one a function which executed continues request flow.
 
-You can read more about middlewares in [express guide](https://expressjs.com/en/guide/using-middleware.html)
+You can read more about middleware in [express guide](https://expressjs.com/en/guide/using-middleware.html).

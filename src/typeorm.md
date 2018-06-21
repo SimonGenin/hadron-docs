@@ -8,7 +8,7 @@ npm install @brainhubeu/hadron-typeorm --save
 
 ## Initializing
 
-Pass package as an argument for hadron bootstrapping function:
+Pass the package as an argument for the Hadron bootstrapping function:
 
 ```javascript
 const hadronTypeOrm = require('@brainhubeu/hadron-typeorm');
@@ -19,7 +19,7 @@ hadron(expressApp, [hadronTypeOrm], config).then(() => {
 });
 ```
 
-## Connecting to database
+## Connecting to a database
 
 You can set up a new connection using [connection object](http://typeorm.io/#/connection).
 
@@ -38,23 +38,23 @@ You can set up a new connection using [connection object](http://typeorm.io/#/co
 ```
 
 * `connectionName` - string that identifies this connection
-* `type` - string that defines type of database, f.e. mysql, mariadb, postgres, sqlite, mongodb,
-* `host` - url to database,
-* `port` - port of database,
-* `username` - username of account to databse,
-* `password` - password to database,
-* `database` - name of database
+* `type` - string that defines the type of database, e.g., mysql, mariadb, postgres, sqlite, mongodb
+* `host` - url to the database
+* `port` - port of the database
+* `username` - username of the account in the databse
+* `password` - password to the database,
+* `database` - name of the database
 * `entities` - array of classes that defines models
-* `entitySchemas` - in case that You are describing models with schemas, put those in this parameter
-* `synchronize` - parameter that defines if database should be automatically synchronized with models
+* `entitySchemas` - if you are describing models with schemas, put those in this parameter
+* `synchronize` - parameter that defines if the database should be automatically synchronized with models
 
-Also all other parameters available in typeOrm are available. Please take a look at [TypeORM documentation](https://github.com/typeorm/typeorm#creating-a-connection-to-the-database)
+Also all other parameters available in TypeORM are available. Please take a look at the [TypeORM documentation](https://github.com/typeorm/typeorm#creating-a-connection-to-the-database)
 
-## Including database connection in hadron
+## Including the database connection in Hadron
 
-_NOTE: Also events aren't included in this section so logging into the console is done using setTimeout._
+_NOTE: Events aren't included in this section so logging into the console is done using setTimeout._
 
-Since we have our connection, we need to include it inside our hadron constructor's config object.
+Since we have our connection, we need to include it inside our config object.
 
 ```javascript
 const hadronTypeOrm = require('@brainhubeu/hadron-typeorm');
@@ -72,7 +72,7 @@ hadron(expressApp, [hadronTypeOrm], config).then((container) => {
 
 ## Entities
 
-Let's assume we want to have a simple table **user**
+Let's assume we want to have a simple table **user**.
 
 | Field     | Type    |
 | --------- | ------- |
@@ -99,7 +99,7 @@ export class Photo {
 }
 ```
 
-When using this method, while creating connection to database, those classes should be in `entities` parameter.
+When using this method, while creating the connection to the database, those classes should be in the `entities` parameter.
 
 ### Schema Way
 
@@ -124,14 +124,14 @@ module.exports = {
 };
 ```
 
-When using this method, while creating connection to database, those schemas should be in `entitySchemas` parameter.
+When using this method, while creating the connection to the database, those schemas should be in the `entitySchemas` parameter.
 
-For more details about defining models, please take a look at [TypeORM documentation](http://typeorm.io/#/entities). Especially section about [available types](http://typeorm.io/#/entities/column-types) for each database distribution
+For more details about defining models, please take a look at the [TypeORM documentation](http://typeorm.io/#/entities). Especially the section about [available types](http://typeorm.io/#/entities/column-types) for each database distribution.
 
-## Injecting entities into hadron
+## Injecting entities into Hadron
 
-To include our entities in hadron, we simply need to include them in our config object.
-Let's modify the code that we were using to initialize hadron:
+To include our entities in Hadron, we simply need to include them in our config object.
+Let's modify the code that we were using to initialize Hadron:
 
 ```javascript
 const hadronTypeOrm = require('@brainhubeu/hadron-typeorm');
@@ -152,7 +152,7 @@ hadron(expressApp, [hadronTypeOrm], config).then((container) => {
 });
 ```
 
-Repository key in Container depends from name of schema/class and is builded in such way:
+Repository keys in the container derive from names of schemas/classes and are built this way:
 `<schema/class name in lower case>Repository`
 
 Examples:
@@ -165,24 +165,24 @@ loremIpsumDolor = loremipsumdolorRepository
 
 ## Repositories
 
-Generater repositories contain same methods as ones from TypeORM. Please check them out here:
+Generated repositories contain the same methods as the ones from TypeORM. You can check them out here:
 
 [http://typeorm.io/#/working-with-entity-manager](http://typeorm.io/#/working-with-entity-manager)
 
 ## Troubleshooting
 
-### I can' connect to database:
+### I can't connect to database:
 
-* make sure that connection config has valid data and there is existing database with specified name
+* Make sure that the connection config contains valid data and there is an existing database with the specified name.
 
 ### There are no tables in my database
 
-* There are few possible reasons for that. Firstly check if parameter `synchronize` in configuration is set to true.
+* There are a few possible reasons for that. First, check if the parameter `synchronize` in configuration is set to true.
 
-* Then make sure that connection configuration contains `entities`/`entitySchemas` fields.
+* Then make sure that the connection configuration contains an `entities`/`entitySchemas` field.
 
-* Remember, if You are using class definition of models, You need to put them in `entities` parameter, otherwise (schema method) in `entitySchemas`
+* Remember, if you are using the class definition of models, you need to put them in the `entities` parameter, otherwise (schema method) in `entitySchemas`.
 
-### There is an information that I am missing a driver
+### There is information that I am missing a driver
 
-* If you decided which database You want to use, You need to add a proper driver to your dependencies. For more details check TypeORM [README](https://github.com/typeorm/typeorm#installation) file
+* If you decided which database you want to use, you need to add a proper driver to your dependencies. For more details check TypeORM [README](https://github.com/typeorm/typeorm#installation) file.

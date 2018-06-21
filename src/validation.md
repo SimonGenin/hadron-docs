@@ -8,7 +8,7 @@ npm install @brainhubeu/hadron-validation --save
 
 ## Creating schema files
 
-To use validation layer, first you need to provide some schemas. We use JSON Schema format, for example:
+To use the validation layer, first you need to provide some schemas. We use JSON Schema format, for example:
 
 ```json
 {
@@ -33,7 +33,7 @@ Full documentation about JSON Schema: [Ajv documentation](https://epoberezkin.gi
 
 ## Preparing schema files for usage with Hadron
 
-When your schemas are ready you need to build object from them, where **key name** is a name of the schema, for example:
+When your schemas are ready you need to build an object out of them, where **key name** is a name of the schema, for example:
 
 ```js
 // schemas.js
@@ -55,7 +55,7 @@ module.exports = schemas;
 
 ## Validate function
 
-After you create schemas object you can create validate function from **Hadron validator factory**
+After you create the schemas object you can create a validate function from the **Hadron validator factory**
 
 ```js
 // validate.js
@@ -66,9 +66,9 @@ const schemas = require('./schemas');
 module.exports = validatorFactory(schemas);
 ```
 
-## Using validate function
+## Using a validate function
 
-After you created validate function with **hadron validator factory** you can use it to validate object by schemas you provide.
+After you've created a validate function with **hadron validator factory** you can use it to validate an object by the schemas you provide.
 
 ```js
 const validObject = {
@@ -85,4 +85,4 @@ validate('schemaName', objectToValidate)
   });
 ```
 
-Validate function passes valid object, otherwise it throws an error.
+The validate function returns a valid object, otherwise it throws an error.

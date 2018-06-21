@@ -8,9 +8,9 @@
 npm install @brainhubeu/hadron-core @brainhubeu/hadron-express express --save
 ```
 
-## Hello world app
+## Hello World app
 
-Let's start with traditional Hello World app. It will give you a quick grasp of the framework.
+Let's start with a simple Hello World app. It will give you a quick grasp of the framework.
 
 ```javascript
 const hadron = require('@brainhubeu/hadron-core').default;
@@ -48,9 +48,9 @@ const hadron = require('hadron-core').default;
 hadron(serverInstance, [...packages], config);
 ```
 
-The purpose of the main function is to initialize DI container and register package dependencies according to correspondent sections in config object (described in details in next chapters).
+The purpose of the main function is to initialize the dependency injection (DI) container and register package dependencies according to corresponding sections in the config object (described in detail in the next chapters).
 
-Main function returns a promise that resolves to created DI container instance. In the promise `.then()` method, besides performing operations on the container instance, we can actually start our server, by calling Express `listen` method:
+The main function returns a promise that resolves to the created DI container instance. In the promise's `.then()` method, aside from performing operations on the container instance, we can actually start our server, by calling the Express `listen` method:
 
 ```javascript
 hadron(serverInstance, ...rest).then((container) => {
@@ -64,9 +64,9 @@ Now, let's move to DI container itself.
 
 ## Dependency Injection
 
-The whole framework is built around DI Container concept. Its purpose is to automatically supply proper arguments for routes callbacks and other framework's building blocks.
+The whole framework is built around the concept of a DI container. Its purpose is to automatically supply proper arguments for routes' callbacks and other building blocks of the framework.
 
-DI container instance is created and used internally by bootstrapping function, it is also returned (as a promise) from bootstrapping function, as mentioned in the previous section.
+DI container instance is created and used internally by the bootstrapping function, it is also returned (as a promise) from the bootstrapping function, as mentioned in the previous section.
 
 ### Container methods
 
@@ -76,15 +76,15 @@ DI container instance is created and used internally by bootstrapping function, 
 container.register(key, item, lifetime);
 ```
 
-* `key` - item name on which it will be registered inside the container
+* `key` - item name with which it's going to be registered inside the container
 * `item` - any value (primitive, data structure, function, class, etc.)
-* `lifetime` - the type of item's life-span
+* `lifetime` - the type of the item's life-span
 
 Lifetime options:
 
-* `'value'` - container returns registered item as is [default]
-* `'singleton'` - returns always the same instance of registered class / constructor function
-* `'transient'` - returns always a new instance of registered class / constructor function
+* `'value'` - the container returns registered item as is [default]
+* `'singleton'` - the container always returns the same instance of the registered class / constructor function
+* `'transient'` - the container always returns a new instance of the registered class / constructor function
 
 #### Retrieving items
 
@@ -94,9 +94,9 @@ container.take(key);
 
 * `key` - item name (same as provided during registration)
 
-The method returns item or item instance according to item type and lifetime option.
+The method returns an item or an item instance according to the item type and lifetime option.
 
-#### Example usage in bootstrapping function
+#### Example usage in the bootstrapping function
 
 ```javascript
 const { default: hadron, Lifetime } = require('hadron-core');
@@ -110,7 +110,7 @@ hadron(...args).then((container) => {
 });
 ```
 
-### Accessing container items from routes' callbacks
+### Accessing container items from route callbacks
 
 To access container items from callbacks, you can just set arguments' names to match container keys, and required dependency will be provided.
 

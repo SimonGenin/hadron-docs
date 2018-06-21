@@ -8,11 +8,11 @@ npm install @brainhubeu/hadron-serialization --save
 
 ## Overview
 
-Serializer allows You to quickly and easy shape and parse data way You want it. You just need to create schema (in json file, or as simple object) and You are ready to go!s
+The serializer allows you to quickly and easily shape and parse data way you want it. You just need to create a schema (in a json file, or as a simple object) and you are ready to go.
 
-## Initializing as Hadron package
+## Initializing as a Hadron package
 
-Pass package as an argument for hadron bootstrapping function:
+Pass the package as an argument for the Hadron bootstrapping function:
 
 ```javascript
 // ... importing and initializing other components
@@ -20,7 +20,7 @@ Pass package as an argument for hadron bootstrapping function:
 hadron(expressApp, [require('@brainhubeu/hadron-serialization')], config);
 ```
 
-That way, You should be able to get it from [Container](http://hadron-docs.dev.brainhub.pl/core/#dependency-injection) like that:
+That way, you should be able to get it from the DI [container](http://hadron-docs.dev.brainhub.pl/core/#dependency-injection) like so:
 
 ```javascript
 const serializer = container.take('serializer');
@@ -40,7 +40,7 @@ serializer.serialize(data);
 
 ## Initializing without Hadron
 
-Just import `serializerProvider` function from package and pass there Your [schemas](#schema) and parsers.
+Just import the `serializerProvider` function from the package and pass your [schemas](#schema) and parsers there.
 
 ```javascript
 const serializerProvider = require('@brainhubeu/hadron-serialization');
@@ -56,7 +56,7 @@ const serializer = serializerProvider({
 
 ## Configuration
 
-If You are using hadron application, You just need to add to it's config schemas and set of parsers:
+If you are using Hadron, you just need to add to its config schemas and set parsers:
 
 ```javascript
 const config = {
@@ -68,7 +68,7 @@ const config = {
 };
 ```
 
-If You are using TypeScript, You can just implement exported interface `ISerializerConfig`
+If you are using TypeScript, you can just implement the exported interface `ISerializerConfig`:
 
 ```typescript
 interface ISerializerConfig {
@@ -79,15 +79,15 @@ interface ISerializerConfig {
 
 ## Usage
 
-Serializer contain three methods.
+The serializer contains three methods.
 
 ```javascript
 serialize(data, groups, schemaName);
 ```
 
 * `data` - object we want to serialize
-* `groups` - optional array of access [groups](#groups), on default `[]`
-* `schemaName` - name of schema, on default name of passed object
+* `groups` - optional array of access [groups](#groups), by default `[]`
+* `schemaName` - name of a schema, by default the name of the passed object
 
 ```javascript
 addSchema(schemaObj);
@@ -99,14 +99,14 @@ addSchema(schemaObj);
 addParser(parser, name);
 ```
 
-Adds parser that can be used in schemas, where:
+Adds a parser that can be used in schemas, where:
 
 * `parser` is a method
-* `name` is name under which parser will be available
+* `name` is the name under which parser will be available
 
 ## Schema
 
-Schema is basic structure, that allows You to easily define your desired object. You can provider them as `json` file. F.e.
+Schema is a basic structure, that allows you to easily define your desired object. You can provide them as `json` files, for instance:
 
 ```json
 {
@@ -133,11 +133,11 @@ Schema is basic structure, that allows You to easily define your desired object.
 }
 ```
 
-Each schema should contain `name`, which will be its identifier, and `properties` which should be an array of fields of defined schema.
+Each schema should contain a `name`, which will be its identifier, and `properties` which should be an array of fields of the defined schema.
 
-All properties that are not defined in schema, will be excluded from the serialized data result.
+All properties that are not defined in the schema, will be excluded from the serialized data result.
 
-If You are using TypeScript, You can just implement exported interface `ISerializationSchema`:
+If you are using TypeScript, you can just implement the exported interface `ISerializationSchema`:
 
 ```typescript
 interface ISerializationSchema {
@@ -146,23 +146,23 @@ interface ISerializationSchema {
 }
 ```
 
-## Property
+## Properties
 
-Each property should contain such fields:
+Each property contains the following fields:
 
 * `name` - (required) name of the field
-* `type` - (required) one of such types:
+* `type` - (required) one of the following types:
   * `string`
   * `number`
   * `bool`
   * `array`
   * `object`
-* `groups` - array of strings, that will define accessibility to this field ([link](#groups)). If empty, such field if public and will be returned always.
-* `parsers` - array of parsers name, that should be run on this field, before it's returned
-* `properties` - array of properties, that are required in case of type `object` and `array`
-* `serializedName` - name of field after serialization
+* `groups` - array of strings, that will define access to this field ([link](#groups)). If empty, the field will be considered public and will be always returned.
+* `parsers` - array of parsers' names, that should be run on this field before it's returned.
+* `properties` - array of properties, that are required in case of the type `object` or `array`
+* `serializedName` - name of the field after serialization
 
-If You are using TypeScript, You can just implement exported interface `IProperty`:
+If you are using TypeScript, you can just implement the exported interface `IProperty`:
 
 ```typescript
 interface IProperty {
@@ -177,7 +177,7 @@ interface IProperty {
 
 ## Groups
 
-While defining schema, You can add `groups` parameter to properties. That way, while serializing data, You can specify serialization group.
+While defining a schema, you can add the `groups` parameter to properties. That way, while serializing data, you can specify the serialization group.
 
 ```javascript
 const schema = {
