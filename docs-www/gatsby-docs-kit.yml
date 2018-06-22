@@ -1,0 +1,54 @@
+--- 
+- 
+  dir: ./src
+  file: pages/landing.js
+  title: Home
+  url: /
+- 
+  dir: ../docs
+  sidemenu: 
+    - 
+      dir: basics
+      items: 
+        - 
+          file: index.md
+          title: Introduction
+        - 
+          file: core.md
+          title: "Hadron Core"
+      title: Basics
+    - 
+      dir: packages
+      items: 
+        - 
+          file: routing.md
+          title: Routing
+        - 
+          file: validation.md
+          title: Validation
+        - 
+          file: serialization.md
+          title: Serialization
+        - 
+          file: typeorm.md
+          title: TypeORM
+        - 
+          file: json-provider.md
+          title: "JSON Provider"
+        - 
+          file: events.md
+          title: Events
+        -
+          file: oauth.md
+          title: OAuth
+      title: "Package Guides"
+    - 
+      dir: advanced
+      items: 
+        - 
+          file: tests.md
+          title: "Testing Hadron"
+      title: "Advanced Topics"
+  title: Hadron
+  url: docs
+

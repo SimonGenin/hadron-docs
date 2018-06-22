@@ -1,8 +1,0 @@
-version: '2'
-services:
-  hadron-docs:
-    image: registry.dev.brainhub.pl/hadron-docs/hadron-docs
-    stdin_open: true
-    tty: true
-    labels:
-      io.rancher.container.pull_image: always

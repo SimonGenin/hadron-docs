@@ -1,3 +1,0 @@
-# Logger for Hadron
-
-(TBD)
