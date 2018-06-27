@@ -7,6 +7,7 @@
   "scripts": {
     "build": "rm -rf .cache && rm -rf public && gatsby build --prefix-paths",
     "develop": "rm -rf .cache && gatsby develop",
+    "deploy:gh": "bash tools/deploy-github.sh",
     "serve": "gatsby serve",
     "lint": "eslint --ext .jsx,.js .",
     "lint:autofix": "eslint --ext .jsx,.js . --fix"
