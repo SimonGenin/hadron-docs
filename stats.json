@@ -9,8 +9,12 @@
       "component---node-modules-brainhubeu-gatsby-docs-kit-src-templates-default-js-89d33f46bfc7ca6e0769.js.map"
     ],
     "path---": [
-      "path----578512b2b8af2dbd8039.js",
-      "path----578512b2b8af2dbd8039.js.map"
+      "path----39017a57877abe7f0722.js",
+      "path----39017a57877abe7f0722.js.map"
+    ],
+    "path---docs-packages-logger": [
+      "path---docs-packages-logger-fda36bd2d14b0d6f30ed.js",
+      "path---docs-packages-logger-fda36bd2d14b0d6f30ed.js.map"
     ],
     "path---docs-basics-core": [
       "path---docs-basics-core-f646bc1d0aa8ddcb9c4e.js",
@@ -63,17 +67,17 @@
       "path---docs-packages-json-provider-cf0fba415efe66af091d.js.map"
     ],
     "component---node-modules-brainhubeu-gatsby-docs-kit-src-layouts-default-js": [
-      "component---node-modules-brainhubeu-gatsby-docs-kit-src-layouts-default-js-2052ef12caa922f226cd.js",
-      "component---node-modules-brainhubeu-gatsby-docs-kit-src-layouts-default-js-2052ef12caa922f226cd.js.map"
+      "component---node-modules-brainhubeu-gatsby-docs-kit-src-layouts-default-js-a9b751ee44fa355c17b8.js",
+      "component---node-modules-brainhubeu-gatsby-docs-kit-src-layouts-default-js-a9b751ee44fa355c17b8.js.map"
     ],
     "path---docs-packages-routing": [
       "path---docs-packages-routing-43626cf34ea738195b62.js",
       "path---docs-packages-routing-43626cf34ea738195b62.js.map"
     ],
     "app": [
-      "app-c1b222a7ce3739677496.js",
+      "app-a650379a8ebca4924bae.js",
       "build-js-styles.css",
-      "app-c1b222a7ce3739677496.js.map",
+      "app-a650379a8ebca4924bae.js.map",
       "build-js-styles.css.map"
     ],
     "path---docs-basics-index": [
