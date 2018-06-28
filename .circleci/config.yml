@@ -1,0 +1,27 @@
+# Javascript Node CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-javascript/ for more details
+#
+version: 2
+jobs:
+  deploy:
+    docker:
+      - image: circleci/node:9.11.1
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - add_ssh_keys:
+          fingerprints:
+            - "08:58:c6:f5:6d:d9:9d:ee:3a:7f:a1:e2:46:35:7b:3a"
+      - run: (cd ./docs-www && yarn install)
+      - run: (cd ./docs-www && yarn build)
+      - run: (cd ./docs-www && yarn deploy:gh)
+
+workflows:
+  version: 2
+  deploy:
+    jobs:
+      - deploy:
+          filters:
+            branches:
+              only: master
