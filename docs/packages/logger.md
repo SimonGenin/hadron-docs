@@ -10,7 +10,7 @@ Hadron Logger provides an option to replace the default hadron logger ([bunyan](
 npm install @brainhubeu/hadron-logger --save
 ```
 
-[More info about installation](http://hadron-docs.dev.brainhub.pl/core/#installation)
+[More info about installation](/docs/basics/core/#installation)
 
 ## Initialization
 
@@ -22,7 +22,7 @@ Pass the package as an argument for the Hadron bootstrapping function:
 hadron(expressApp, [require('@brainhubeu/hadron-logger')], config);
 ```
 
-That way, you should be able to get it from the [Container](http://hadron-docs.dev.brainhub.pl/core/#dependency-injection) like that:
+That way, you should be able to get it from the [Container](/docs/basics/core/#dependency-injection) like that:
 
 ```javascript
 const logger = container.take('logger');

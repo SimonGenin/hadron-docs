@@ -20,7 +20,7 @@ Pass the package as an argument for the Hadron bootstrapping function:
 hadron(expressApp, [require('@brainhubeu/hadron-serialization')], config);
 ```
 
-That way, you should be able to get it from the DI [container](http://hadron-docs.dev.brainhub.pl/core/#dependency-injection) like so:
+That way, you should be able to get it from the DI [container](/docs/basics/core/#dependency-injection) like so:
 
 ```javascript
 const serializer = container.take('serializer');
