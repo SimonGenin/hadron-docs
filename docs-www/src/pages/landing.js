@@ -20,7 +20,7 @@ const LandingPage = () => (
           <span className={styles.btn__text}>Get started <img src={arrow} /></span>
         </Link>
 
-        <Link to="/tutorial" className={styles['landing__btn--alt']}>
+        <Link to="/tutorial/main/First" className={styles['landing__btn--alt']}>
           <span className={styles.btn__text}>Take the tutorial</span>
         </Link>
       </div>
