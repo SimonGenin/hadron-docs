@@ -26,5 +26,3 @@ Current packages:
 * CLI tool
 
 Built with TypeScript, but it's primary target is JavaScript apps. Hadron’s API embraces current ECMAScript standards, with the cherry of good IDE support via codebase types declarations on top.
-
-> To read more about Hadron check out our article: [https://medium.com](https://medium.com/@damian23/5674e33db3f7)

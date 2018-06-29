@@ -13,7 +13,7 @@
     "lint:autofix": "eslint --ext .jsx,.js . --fix"
   },
   "dependencies": {
-    "@brainhubeu/gatsby-docs-kit": "^1.0.2",
+    "@brainhubeu/gatsby-docs-kit": "^1.0.3",
     "gatsby": "^1.9.270",
     "gatsby-plugin-google-analytics": "^1.0.31"
   },
