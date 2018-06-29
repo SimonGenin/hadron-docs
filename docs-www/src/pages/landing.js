@@ -67,7 +67,7 @@ const LandingPage = () => (
     <footer className={`${styles.section} ${styles.footer}`}>
       <div className={styles.footer__wrapper}>
         <h2>About</h2>
-        <p>Built with <OutboundLink href="http://brainhub.eu">❤️</OutboundLink> by <OutboundLink href="http://brainhub.eu">Brainhub</OutboundLink>, JavaScript brainiacs ready to build your next app.</p>
+        <p>Built with ❤️ by <OutboundLink href="http://brainhub.eu">Brainhub</OutboundLink>, JavaScript brainiacs ready to build your next app.</p>
       </div>
     </footer>
   </div>
