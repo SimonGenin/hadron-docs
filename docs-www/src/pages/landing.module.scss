@@ -166,3 +166,17 @@
   width: 100%;
   max-width: 960px;
 }
+
+@media (max-width: 768px) {
+  .landing__header {
+    font-size: 2rem;
+  }
+
+  .landing__logo {
+    margin-bottom: 2rem;
+  }
+
+  .section {
+    padding-top: 1rem;
+  }
+}
