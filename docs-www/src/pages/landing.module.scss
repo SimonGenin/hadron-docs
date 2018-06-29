@@ -152,7 +152,8 @@
 .footer {
   text-align: left;
   background: #e2e1e7;
-  padding-left: 10rem;
+  display: flex;
+  justify-content: center;
 
   h2 {
     font-size: 2rem;
@@ -162,4 +163,9 @@
   p {
     font-size: 1rem;
   }
+}
+
+.footer__wrapper {
+  width: 100%;
+  max-width: 960px;
 }

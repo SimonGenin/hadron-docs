@@ -9,6 +9,8 @@ import dependencyImg from './landing-assets/dependency-injection.svg';
 import modularImg from './landing-assets/modular-structure.svg';
 import arrow from './landing-assets/arrow.svg';
 
+import { OutboundLink } from 'gatsby-plugin-google-analytics';
+
 const LandingPage = () => (
   <div className={styles.landing}>
     <div className={styles.section}>
@@ -57,11 +59,11 @@ const LandingPage = () => (
     </div>
 
     <footer className={`${styles.section} ${styles.footer}`}>
-      <h2>About</h2>
-      <p>Built with &lt;3 by Brainhub, JavaScript brainiacs ready to build your next app.</p>
+      <div className={styles.footer__wrapper}>
+        <h2>About</h2>
+        <p>Built with <OutboundLink href="http://brainhub.eu">❤️</OutboundLink> by <OutboundLink href="http://brainhub.eu">Brainhub</OutboundLink>, JavaScript brainiacs ready to build your next app.</p>
+      </div>
     </footer>
-
-
   </div>
 );
 
