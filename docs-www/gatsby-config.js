@@ -15,16 +15,18 @@ module.exports = {
   },
 
   plugins: [
-    {
-      resolve: 'gatsby-plugin-google-analytics',
-      options: {
-        trackingId: process.env.GA_TRACKING_ID,
-        anonymize: false,
-      }
-    },
     ...pluginConfigFactory({
       config: `${__dirname}/gatsby-docs-kit.yml`,
       resources: path.resolve(__dirname, '../docs'),
     }),
+    {
+      resolve: 'gatsby-plugin-google-analytics',
+      options: {
+        trackingId: process.env.GA_ID,
+        anonymize: false,
+        respectDNT: false,
+        head: true
+      }
+    },
   ]
 };
