@@ -12,7 +12,7 @@ const LandingPage = () => (
         <Link to="/docs/basics/index" className={styles.landing__btn}>
           <span>Get started!</span>
         </Link>
-        <Link to="/tutorial" className={styles['landing__btn--alt']}>
+        <Link to="/tutorial/main/First" className={styles['landing__btn--alt']}>
           <span>I'm a useless button!</span>
         </Link>
       </div>

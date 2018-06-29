@@ -54,4 +54,42 @@
       title: "Advanced Topics"
   title: Hadron
   url: docs
+-
+  dir: ../docs/tutorial
+  title: Tutorial
+  url: /tutorial
+  sidemenu:
+    - 
+      title: Main
+      dir: main
+      items:
+        -
+          file: First.md
+          title: Hello World with Hadron
+        -
+          file: Second.md
+          title: TypeORM
+        -
+          file: Third.md
+          title: User 
+        -
+          file: Fourth.md
+          title: Authorization with Hadron
+    - 
+      title: Basics
+      dir: services
+      items:
+        -
+          file: responses.md
+          title: Custom responses
+        -
+          file: roleService.md
+          title: Role Service
+        -
+          file: userService.md
+          title: User Service
+        -
+          file: taskService.md
+          title: Task Service
+
 
