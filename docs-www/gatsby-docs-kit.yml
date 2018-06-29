@@ -4,6 +4,7 @@
   file: pages/landing.js
   title: Home
   url: /
+  layout: default
 -
   dir: ../docs
   sidemenu:

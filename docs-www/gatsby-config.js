@@ -14,8 +14,17 @@ module.exports = {
     githubUrl: 'https://github.com/brainhubeu',
   },
 
-  plugins: pluginConfigFactory({
-    config: `${__dirname}/gatsby-docs-kit.yml`,
-    resources: path.resolve(__dirname, '../docs'),
-  }),
+  plugins: [
+    {
+      resolve: 'gatsby-plugin-google-analytics',
+      options: {
+        trackingId: process.env.GA_TRACKING_ID,
+        anonymize: false,
+      }
+    },
+    ...pluginConfigFactory({
+      config: `${__dirname}/gatsby-docs-kit.yml`,
+      resources: path.resolve(__dirname, '../docs'),
+    }),
+  ]
 };

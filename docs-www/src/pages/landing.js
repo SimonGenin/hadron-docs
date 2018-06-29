@@ -56,6 +56,12 @@ const LandingPage = () => (
       </div>
     </div>
 
+    <footer className={`${styles.section} ${styles.footer}`}>
+      <h2>About</h2>
+      <p>Built with &lt;3 by Brainhub, JavaScript brainiacs ready to build your next app.</p>
+    </footer>
+
+
   </div>
 );
 

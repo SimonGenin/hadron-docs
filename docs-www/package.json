@@ -13,12 +13,13 @@
     "lint:autofix": "eslint --ext .jsx,.js . --fix"
   },
   "dependencies": {
-    "gatsby": "^1.9.270",
-    "@brainhubeu/gatsby-docs-kit": "^1.0.1"
+    "@brainhubeu/gatsby-docs-kit": "^1.0.1",
+    "gatsby": "^1.9.270"
   },
   "devDependencies": {
     "eslint": "^4.19.1",
     "eslint-config-brainhub": "^1.8.0",
+    "gatsby-plugin-google-analytics": "^1.0.31",
     "gh-pages": "^1.1.0",
     "react": "^16.4.0",
     "react-dom": "^16.4.0"
