@@ -6,12 +6,12 @@ const pluginConfigFactory = require('@brainhubeu/gatsby-docs-kit/plugins');
 module.exports = {
   siteMetadata: {
     title: 'Hadron Docs',
-    description: 'Super duper Hadron website.',
+    description: 'Hadron Framework',
     image: 'https://cdn-images-1.medium.com/max/1200/1*CLUFZFaXF6NG27NA3d_JkQ.jpeg',
-    url: 'https://screencloud.dev.brainhub.pl/',
+    url: 'https://hadron.pro/',
     type: 'article',
     siteName: 'Hadron Documentation',
-    githubUrl: 'https://github.com/brainhubeu',
+    githubUrl: 'https://github.com/brainhubeu/hadron',
   },
 
   plugins: [

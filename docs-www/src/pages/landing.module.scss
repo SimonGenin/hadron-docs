@@ -1,13 +1,5 @@
 @import './variables.scss';
 
-// I'm going to hell for this.
-:global {
-  .container > main {
-    max-width: initial;
-    padding: initial;
-  }
-}
-
 .landing {
   text-align: center;
   display: flex;
@@ -15,6 +7,7 @@
   align-items: center;
   justify-content: center;
   min-height: calc(100vh - 2*#{$mainNavHeight} - 64px);
+  width: 100%;
 }
 
 .landing__logo {
@@ -122,6 +115,10 @@
 
 .section {
   padding: 4rem;
+}
+
+.section_content {
+  max-width: 960px;
 }
 
 .features {
