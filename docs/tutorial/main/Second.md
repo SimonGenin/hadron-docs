@@ -1,4 +1,4 @@
-### Connecting hadron to a MySQL database with TypeORM
+## Connecting hadron to a MySQL database with TypeORM
 
 First let's create `User` and `Role` schemas for our database.
 
@@ -84,7 +84,7 @@ In there we need to create a new database, for example let's create one named `h
 
 When we have met the requirements, we can init **hadron-typeorm**. First, we need to install the hadron-typeorm module and mysql dependency:
 
-```bash 
+```bash
 npm install --save @brainhubeu/hadron-typeorm mysql
 ```
 Secondly, we need to prepare a configuration file (in src/config/db.js):
@@ -144,7 +144,7 @@ import * as hadronTypeOrm from '@brainhub/hadron-typeorm';
 // ...
 
 const hadronInit = async () => {
-    const container = await hadron(expressApp, 
+    const container = await hadron(expressApp,
         [hadronExpress, hadronTypeOrm],
         config);
 ```

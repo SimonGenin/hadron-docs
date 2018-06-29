@@ -1,4 +1,4 @@
-### Task Service:
+## Task Service
 
 #### Imports:
 ```javascript
@@ -15,7 +15,7 @@ export const save = async (req, { taskRepository }) => {
         const savedTask = await taskRepository.save(data);
 
         return {
-            status: 201, 
+            status: 201,
             body: {
                 savedTask,
             },
@@ -152,7 +152,7 @@ export const remove = async (req, { taskRepository }) => {
         if (!task) {
             return notFound(`Task with id: "${req.params.id} does not exists.`);
         }
-        
+
         await taskRepository.removeById(task.id);
 
         return {

@@ -1,4 +1,4 @@
-### Authorization with hadron-auth
+## Authorization with hadron-auth
 Installation:
 ```bash
 npm install --save @brainhubeu/hadron-auth
@@ -55,7 +55,7 @@ const hadronInit = async () => {
 hadronInit();
 ```
 
---- 
+---
 WARNING, don't forget to add `hadronAuth` first in the package array.
 
 ---
@@ -103,7 +103,7 @@ export const loginMiddleware = async (req, { userRepository }) => {
         const user = await userRepository.findOne({ where: { username: data.username } });
 
         if (!user) {
-            return unauthorized(`Unauthorized`);    
+            return unauthorized(`Unauthorized`);
         }
 
         const validPassword = await bcrypt.compare(data.password, user.passwordHash);

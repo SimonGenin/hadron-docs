@@ -1,4 +1,4 @@
-### Role Service:
+## Role Service
 
 #### Imports:
 ```javascript
@@ -37,7 +37,7 @@ export const save = async (req, { roleRepository }) => {
 export const update = async (req, { roleRepository }) => {
     try {
         const data = await validate('insertRole', req.body);
-        
+
         const role = await roleRepository.findOne({ where: { id: req.params.id } });
 
         if (!role) {
