@@ -3,29 +3,35 @@ import Link from 'gatsby-link';
 
 import styles from './landing.module.scss';
 
+import logo from './landing-assets/logo.svg'
 import frameworkImg from './landing-assets/framework-agnostic.svg';
 import dependencyImg from './landing-assets/dependency-injection.svg';
 import modularImg from './landing-assets/modular-structure.svg';
+import arrow from './landing-assets/arrow.svg';
 
 const LandingPage = () => (
   <div className={styles.landing}>
-    <div>
-      <img src='http://via.placeholder.com/256x256' />
+    <div className={styles.section}>
+      <img className={styles.landing__logo} src={logo} />
       <h1 className={styles.landing__header}>Loveable, high-level framework for Node.js</h1>
       <p className={styles.landing__subheader}>Build a testable, modular backend with a dependency injection pattern in plain JavaScript.</p>
       <div className={styles.btn__wrapper}>
         <Link to="/docs/basics/index" className={styles.landing__btn}>
-          <span>Get started!</span>
+          <span className={styles.btn__text}>Get started <img src={arrow} /></span>
+        </Link>
+
+        <Link to="/tutorial" className={styles['landing__btn--alt']}>
+          <span className={styles.btn__text}>Take the tutorial</span>
         </Link>
       </div>
     </div>
 
-    <div className={styles.features}>
+    <div className={`${styles.section} ${styles.features}`}>
       <h2 className={styles.features__header}>Why you should try Hadron</h2>
       <div className={styles.features__row}>
         <div className={styles.features__unit}>
           <img src={frameworkImg} />
-          <h3>Framework-agnostic</h3>
+          <h3>Low-level framework-agnostic</h3>
           <p>Your application is built independently from other frameworks (Express, Koa). Hadron creates a layer between HTTP requests and your app written in plain Javascript.</p>
         </div>
         <div className={styles.features__unit}>
@@ -38,6 +44,15 @@ const LandingPage = () => (
           <h3>Modular structure</h3>
           <p>The modular structure enables you to add/remove packages or create your own extensions. Hadron provides a complete solution for request processing using separate packages.</p>
         </div>
+      </div>
+    </div>
+
+    <div className={styles.section}>
+      <p className={styles.landing__subheader}>Built with TypeScript, but it's primary target is JavaScript apps. Hadron’s API embraces current ECMAScript standards, with the cherry of good IDE support via codebase types declarations on top.</p>
+      <div className={styles.btn__wrapper}>
+        <Link to="/docs/basics/index" className={styles.landing__btn}>
+          <span className={styles.btn__text}>Get started <img src={arrow} /></span>
+        </Link>
       </div>
     </div>
 

@@ -1,5 +1,14 @@
 $colorBHBg: #150940;
+$colorBHBg2: #F5F5F6;
 $colorBHMain: #7b59ff;
 $white: #ffffff;
 
 $mainNavHeight: 80px;
+
+$rwd-break: 800px;
+
+@mixin break-column {
+  @media screen and (max-width: $rwd-break) {
+    flex-direction: column;
+  }
+}
