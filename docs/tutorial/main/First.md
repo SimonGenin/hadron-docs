@@ -1,4 +1,4 @@
-### Hello World with Hadron
+## Hello World with Hadron
 
 First of all, let's create a `hello world` route with the **Hadron** framework, we are going to build a simple route on `/` which will return `200` status and the `message: Hello World` in the body response.
 
@@ -61,7 +61,7 @@ Where the start command is:
 ```
 ---
 
-#### **Warning** 
+#### **Warning**
 To have a working command as above, we need to install some dependencies:
 
 ```bash
@@ -91,7 +91,7 @@ We should see:
 
 ![Hadron Init Terminal](./img/hadron-init-terminal.png)
 
-And when we enter `http://localhost:4000/`, we should receive the hello world message from our server: 
+And when we enter `http://localhost:4000/`, we should receive the hello world message from our server:
 ```javascript
 {
     message: "Hello World"

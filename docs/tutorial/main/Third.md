@@ -1,4 +1,4 @@
-### Services with Hadron.js
+## Services with Hadron.js
 Let's start with a simple CRUD for the `Role` model.
 **hadron-core** provides a container, which can be used anywhere in the app, **hadron-typeorm** by default registers repositories for included schemas and with **hadron-express** we can use the container in the callback, like this:
 ```javascript
@@ -131,7 +131,7 @@ const hadronInit = async () => {
         routes,
     };
 
-    const container = await hadron(expressApp, 
+    const container = await hadron(expressApp,
         [hadronExpress, hadronTypeOrm],
         config);
 
@@ -196,7 +196,7 @@ And now we can use our validate method in the service.
 
 First, we need to import it:
 
-```javascript 
+```javascript
 // src/services/roleService.js
 import validate from '../validation/validate';
 ```
@@ -237,7 +237,7 @@ Now we can finish the service and routes for our `Role`:
 export const update = async (req, { roleRepository }) => {
     try {
         const data = await validate('insertRole', req.body);
-        
+
         const role = await roleRepository.findOne({ where: { id: req.params.id } });
 
         if (!role) {
@@ -369,7 +369,7 @@ findAllRoles: {
 },
 ```
 
-Full role service and role routes can be found here: [roleService](tutorial/sub/roleService)
+Full role service and role routes can be found here: [roleService](../services/roleService.md)
 
 Now let's create the `Task` schema:
 
@@ -406,12 +406,12 @@ export default taskSchema;
 
 Now you can implement a service and routes for `User` and `Task` models.
 If you have any problems here you can check:
-* [User Service and routes](tutorial/sub/userService)
-* [Task Service and routes](tutorial/sub/taskService)
-* [Custom responses](tutorial/sub/responses)
+* [User Service and routes](../services/userService.md)
+* [Task Service and routes](../services/taskService.md)
+* [Custom responses](../services/responses.md)
 
 
---- 
+---
 # WARNING
 #### Hadron-Auth module is not finished yet
 
