@@ -14,6 +14,7 @@ node_modules
 
 #VSCode metadata
 .vscode
+*.swp
 
 # Mac files
 .DS_Store

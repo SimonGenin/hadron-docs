@@ -18,13 +18,14 @@
 }
 
 .landing__logo {
-  margin-bottom: 4rem;
+  margin-bottom: 6rem;
 }
 
 .landing__header {
   font-size: 3rem;
   margin-bottom: 1rem;
-  font-weight: 800;
+  letter-spacing: 1px;
+  font-weight: 700;
   margin-top: 0;
 }
 
@@ -146,4 +147,19 @@
 
 .features__unit {
   padding: 2rem;
+}
+
+.footer {
+  text-align: left;
+  background: #e2e1e7;
+  padding-left: 10rem;
+
+  h2 {
+    font-size: 2rem;
+    font-weight: 300;
+  }
+
+  p {
+    font-size: 1rem;
+  }
 }
