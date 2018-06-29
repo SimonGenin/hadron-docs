@@ -78,9 +78,9 @@
     lodash "^4.2.0"
     to-fast-properties "^2.0.0"
 
-"@brainhubeu/gatsby-docs-kit@^1.0.1":
-  version "1.0.1"
-  resolved "https://registry.npmjs.org/@brainhubeu/gatsby-docs-kit/-/gatsby-docs-kit-1.0.1.tgz#3460eea530d740b54340e89305ebdb3ee6952a25"
+"@brainhubeu/gatsby-docs-kit@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@brainhubeu/gatsby-docs-kit/-/gatsby-docs-kit-1.0.2.tgz#8c56cea34cc0a5fc5f6fc046da37f7453ceb3ffc"
   dependencies:
     classnames "^2.2.5"
     gatsby-link "^1.6.40"
@@ -4262,6 +4262,12 @@ gatsby-plugin-favicon@^2.1.1:
   dependencies:
     babel-runtime "^6.26.0"
     favicons-webpack-plugin "0.0.7"
+
+gatsby-plugin-google-analytics@^1.0.31:
+  version "1.0.31"
+  resolved "https://registry.yarnpkg.com/gatsby-plugin-google-analytics/-/gatsby-plugin-google-analytics-1.0.31.tgz#eaf16e1809461b10badf12c05038c429745783c0"
+  dependencies:
+    babel-runtime "^6.26.0"
 
 gatsby-plugin-meta-redirect@^1.1.0:
   version "1.1.0"
