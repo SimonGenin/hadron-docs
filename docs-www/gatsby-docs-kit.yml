@@ -40,6 +40,9 @@
           file: events.md
           title: Events
         -
+          file: auth.md
+          title: Auth
+        -
           file: oauth.md
           title: OAuth
         -
