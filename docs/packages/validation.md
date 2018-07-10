@@ -60,7 +60,7 @@ After you create the schemas object you can create a validate function from the 
 ```js
 // validate.js
 
-const validatorFactory = require('@brainhubeu/hadron-validation');
+const validatorFactory = require('@brainhubeu/hadron-validation').default;
 const schemas = require('./schemas');
 
 module.exports = validatorFactory(schemas);
