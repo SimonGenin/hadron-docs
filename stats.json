@@ -17,8 +17,8 @@
       "path---tutorial-services-responses-062f33a055ce11de6393.js.map"
     ],
     "path---": [
-      "path----5205b5a617913e9ed8b2.js",
-      "path----5205b5a617913e9ed8b2.js.map"
+      "path----d1b71d7ac9bc9de72ac9.js",
+      "path----d1b71d7ac9bc9de72ac9.js.map"
     ],
     "path---docs-packages-logger": [
       "path---docs-packages-logger-b8ea862a0ac85f102d63.js",
@@ -64,6 +64,10 @@
       "path---index-fabf0a82e327c1d00460.js",
       "path---index-fabf0a82e327c1d00460.js.map"
     ],
+    "path---docs-packages-auth": [
+      "path---docs-packages-auth-2bdeb9d3e37a191c03df.js",
+      "path---docs-packages-auth-2bdeb9d3e37a191c03df.js.map"
+    ],
     "component---src-pages-landing-js": [
       "component---src-pages-landing-js-b4438e1a4407c6a434b8.js",
       "component---src-pages-landing-js-b4438e1a4407c6a434b8.js.map"
@@ -87,17 +91,17 @@
       "path---docs-packages-json-provider-cf0fba415efe66af091d.js.map"
     ],
     "component---node-modules-brainhubeu-gatsby-docs-kit-src-layouts-default-js": [
-      "component---node-modules-brainhubeu-gatsby-docs-kit-src-layouts-default-js-1e16ac789f4d4b47be4d.js",
-      "component---node-modules-brainhubeu-gatsby-docs-kit-src-layouts-default-js-1e16ac789f4d4b47be4d.js.map"
+      "component---node-modules-brainhubeu-gatsby-docs-kit-src-layouts-default-js-f2190a233c6626ae2280.js",
+      "component---node-modules-brainhubeu-gatsby-docs-kit-src-layouts-default-js-f2190a233c6626ae2280.js.map"
     ],
     "path---docs-packages-routing": [
       "path---docs-packages-routing-43626cf34ea738195b62.js",
       "path---docs-packages-routing-43626cf34ea738195b62.js.map"
     ],
     "app": [
-      "app-b0a5b88a3418192104a2.js",
+      "app-b862bf668894c9599553.js",
       "build-js-styles.css",
-      "app-b0a5b88a3418192104a2.js.map",
+      "app-b862bf668894c9599553.js.map",
       "build-js-styles.css.map"
     ],
     "path---tutorial-main-fourth": [
