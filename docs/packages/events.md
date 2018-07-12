@@ -147,6 +147,31 @@ const listeners = [
 
 ---
 
+`HANDLE_RESPONSE_EVENT`
+
+Event fires after the callback resolves, allowing you to handle the response differently than through the built-in JSON serialization.
+
+```js
+const ExpressEvent = require('@brainhubeu/hadron-express').Event;
+const listeners = [
+  {
+    name: 'teapotListener',
+    event: 'HANDLE_RESPONSE_EVENT',
+    handler: (callback, res) => spec => {
+      // Automatically change HTTP status to 418 if
+      // the body contains the word 'teapot'.
+      if (spec.body.includes('teapot')) {
+        spec.status = 418;
+      }
+
+      return res.json(spec);
+    },
+  },
+];
+```
+
+---
+
 `HANDLE_TERMINATE_APPLICATION_EVENT`
 
 Event fires when the application is terminated with <kbd>CTRL</kbd> + <kbd>C</kbd>, passes the default Hadron callback to the listener.
