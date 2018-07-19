@@ -59,41 +59,29 @@
   title: Docs
   url: docs
 -
-  dir: ../docs/tutorial
-  title: Tutorial
-  url: /tutorial
+  dir: ../docs/guide
+  title: Guide
+  url: /guide
   sidemenu:
     - 
-      title: Main
-      dir: main
+      title: Todo App with Hadron
+      dir: todo
       items:
         -
-          file: First.md
-          title: Hello World with Hadron
+          file: start.md
+          title: Getting started
         -
-          file: Second.md
-          title: TypeORM
+          file: routing.md
+          title: Routing
         -
-          file: Third.md
-          title: User 
+          file: database.md
+          title: Database integration
         -
-          file: Fourth.md
-          title: Authorization with Hadron
-    - 
-      title: Basics
-      dir: services
-      items:
+          file: schemas.md
+          title: Entity schemas
         -
-          file: responses.md
-          title: Custom responses
+          file: crud.md
+          title: CRUD operations
         -
-          file: roleService.md
-          title: Role Service
-        -
-          file: userService.md
-          title: User Service
-        -
-          file: taskService.md
-          title: Task Service
-
-
+          file: example.md
+          title: Complete example
