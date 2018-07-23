@@ -408,7 +408,7 @@ The ability to use raw middlewares gives you possibility to use huge amount of e
 Raw middlewares take three arguments: `request`, `response` and `next`. First two are objects and third one - function which executed continues request flow, for example:
 
 ```javascript
-const myMiddleware = (req, res, next) => {
+const myRawMiddleware = (req, res, next) => {
   console.log("Hello from custom middleware");
   next();
 };
@@ -425,7 +425,7 @@ Hadron middlewares automatically call `next()` function at the end of the middle
 Middleware has the following structure:
 
 ```javascript
-const callback = (request, dependencies) = {
+const myHadronMiddleware = (request, dependencies) = {
   // ... some operations
   return responseSpec | partialResponseSpec | partialRequest;
 };
@@ -444,7 +444,7 @@ Same as in request callback, it sends response immediately.
 You can set partial response specification with headers or status (or both) by specifying returned object type property as `PARTIAL_RESPONSE`, for example:
 
 ```javascript
-const callback = (request, dependencies) = {
+const myHadronMiddleware = (request, dependencies) = {
   // ... some operations
   return {
     type: "PARTIAL_RESPONSE",
@@ -461,7 +461,7 @@ const callback = (request, dependencies) = {
 You can change request object - modify or add keys, by specifying returned object `type` property as `PARTIAL_REQUEST` and `values` object with keys to add/modify, for example:
 
 ```javascript
-const callback = (request, dependencies) = {
+const myHadronMiddleware = (request, dependencies) = {
   // ... some operations
   return {
     type: "PARTIAL_REQUEST",
