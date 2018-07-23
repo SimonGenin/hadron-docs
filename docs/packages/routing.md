@@ -369,10 +369,9 @@ It will respond with a body:
 
 And status `200`.
 
+## Middlewares
 
-## Middleware
-
-*Note: Currently middlewares only refer to express.*
+_Note: Currently middlewares only refer to express._
 
 Routing with Hadron provides middleware support. You need to pass an array with middleware functions to a `middleware` key in route config.
 
@@ -385,20 +384,14 @@ middlewareExample: {
   },
   methods: ['GET'],
   middleware: [
-    (req, res, next) => {
-      console.log(`First middleware`);
-      next();
-    },
-    (req, res, next) => {
-      console.log(`Second middleware`);
-      next();
-    },
+    firstMiddleware, // logs "First middleware"
+    secondMiddleware, // logs "Second middleware"
   ],
   path: '/',
 },
 ```
 
-`GET` request to `/` will log the following to the console:
+`GET` request to `/` will log to the console following:
 
 ```sh
 First middleware
@@ -406,6 +399,76 @@ Second middleware
 Callback function
 ```
 
-Middleware functions take three arguments: `request`, `response` and `next`. First two are objects and third one a function which executed continues request flow.
+You can use either raw middleware compatible with the underlying micro-framework, or the special form of Hadron middleware. You can mix both types, taking to the account recommendations specified below.
 
-You can read more about middleware in [express guide](https://expressjs.com/en/guide/using-middleware.html).
+### Raw middlewares
+
+The ability to use raw middlewares gives you possibility to use huge amount of existing third-party middlewares. You could also write your custom raw middlewares, however in most cases we recommend you to use Hadron middlewares syntax.
+
+Raw middlewares take three arguments: `request`, `response` and `next`. First two are objects and third one - function which executed continues request flow, for example:
+
+```javascript
+const myMiddleware = (req, res, next) => {
+  console.log("Hello from custom middleware");
+  next();
+};
+```
+
+You can read more about middlewares in [express guide](https://expressjs.com/en/guide/using-middleware.html)
+
+### Hadron middlewares
+
+Hadron middlewares gives you an abstraction over underlying micro-framework, which minimizes required changes when you decide to switch to another one in the future. They also give you safe access to DI container and declarative, easy to test API, similar to route callback API.
+
+Hadron middlewares automatically call `next()` function at the end of the middleware. In case that you really need to control the `next` function you should use a raw middleware instead.
+
+Middleware has the following structure:
+
+```javascript
+const callback = (request, dependencies) = {
+  // ... some operations
+  return responseSpec | partialResponseSpec | partialRequest;
+};
+```
+
+`request` and `dependencies` are identical as for request callback, only difference are extended result types:
+
+---
+
+#### responseSpec
+
+Same as in request callback, it sends response immediately.
+
+#### partialResponseSpec
+
+You can set partial response specification with headers or status (or both) by specifying returned object type property as `PARTIAL_RESPONSE`, for example:
+
+```javascript
+const callback = (request, dependencies) = {
+  // ... some operations
+  return {
+    type: "PARTIAL_RESPONSE",
+    headers: {
+      "custom-header": "some value"
+    },
+    status: 418
+  };
+};
+```
+
+#### partialRequest
+
+You can change request object - modify or add keys, by specifying returned object `type` property as `PARTIAL_REQUEST` and `values` object with keys to add/modify, for example:
+
+```javascript
+const callback = (request, dependencies) = {
+  // ... some operations
+  return {
+    type: "PARTIAL_REQUEST",
+    values: {
+      body: 'bar',
+      customKey: 'foo',
+    },
+  };
+};
+```
