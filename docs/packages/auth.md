@@ -1,233 +1,584 @@
-## Installation
 
-```bash
+## Installation
+```sh
 npm install @brainhubeu/hadron-auth --save
 ```
 
 ## Overview
 
-**hadron-auth** provides a back-end authorization layer for routes you choose.
+**hadron-auth** is a package that simplifies working with the traditional username-password authorization flow. It provides a basic structure for authorization and authentication using JSON web token.
 
-### Configuration with Hadron Core
+## Guide
 
-If you want to use **hadron-auth** with **hadron-core**, you should also import **hadron-typeorm** and **hadron-express**. All you need to provide is two schemas for TypeORM:
+Let's build a simple Hadron backend with authorization. Before you begin, you should have a MySQL database running, either directly on your machine or Docker. See [TypeORM guide](/docs/packages/typeorm) for details.
 
-* `User` (id, username, and roles many-to-many relationship required)
-  Here is an example schema:
+*If you already have your database configuration, login and registration routes created, you can skip directly to the [authorization](#authorization) section.*
 
-```javascript
-// schemas/User
+Start by importing all the necessary packages.
+
+```sh
+npm install --save @brainhubeu/hadron-core \
+@brainhubeu/hadron-express \
+@brainhubeu/hadron-typeorm \
+@brainhubeu/hadron-auth \
+express body-parser mysql bcrypt jsonwebtoken
+```
+
+Create the application entry point:
+
+```js
+const hadron = require('@brainhubeu/hadron-core').default;
+const express = require('express');
+const bodyParser = require('body-parser');
+
+const dependencies = [
+  require('@brainhubeu/hadron-auth'),
+  require('@brainhubeu/hadron-express'),
+  require('@brainhubeu/hadron-typeorm'),
+];
+
+const port = process.env.PORT || 8080;
+const app = express();
+app.use(bodyParser.json());
+
+const config = {
+  // config goes here...
+};
+
+hadron(app, dependencies, config).then(() => {
+  app.listen(port, () => {
+    console.log(`App listening on port ${port}`);
+  });
+});
+```
+
+Your server is now operational. Let's consider what needs to be done for a successful auth flow.
+
+- The users need a way to register an account
+- The users need a way to login to an existing account.
+- The server needs a way to verify user's identity to access secure routes.
+
+User registration and login should be simple thanks to Hadron's integration with TypeORM.  You can use `bcrypt` to hash your users' passwords so that they aren't stored directly in the database.
+
+Authentication will be accomplished using JSON Web Tokens (JWT) that the users can store in their browser's cookies or local storage. hadron-auth gives you access to a default middleware that can be used to authenticate users using JWT, or you can create your own.
+
+### Configuration
+
+First include the TypeORM connection configuration in Hadron's config object:
+
+```js
+const config = {
+  connection: {
+    connectionName: 'default',
+    type: 'mysql',
+    host: 'localhost',
+    port: 3306,
+    username: 'root',
+    password: process.env.DATABASE_PW,
+    database: 'authdemo',
+    entitySchemas: [],
+    synchronize: true,
+  },
+};
+```
+
+### Schemas
+
+To take advantage of hadron-auth's features we need to create schemas for two tables: users and roles. Then, users can be authenticated based on the roles they possess.
+
+Users will be linked to roles via a many-to-many relation.
+
+```js
 const userSchema = {
-  name: 'User',
+  name: 'user',
   columns: {
-    id: {
-      primary: true,
-      type: 'int',
-      generated: true,
-    },
-    username: {
-      type: 'varchar',
-      unique: true,
-    },
-    passwordHash: {
-      type: 'varchar',
-    },
-    addedOn: {
-      type: 'timestamp',
-    },
+    id: { primary: true, generated: true, type: 'int' },
+    username: { unique: true, type: 'varchar' },
+    hash: { type: 'varchar' },
   },
   relations: {
     roles: {
-      target: 'Role',
+      target: 'role',
       type: 'many-to-many',
-      joinTable: {
-        name: 'user_role',
-      },
-      onDelete: 'CASCADE',
+      joinTable: { name: 'user_role' },
     },
   },
 };
-
-module.exports = userSchema;
 ```
 
-* `Role` (id and name required)
-  Example schema:
-
-```javascript
-// schemas/Role
+```js
 const roleSchema = {
-  name: 'Role',
+  name: 'role',
   columns: {
-    id: {
-      primary: true,
-      type: 'int',
-      generated: true,
+    id: { primary: true, generated: true, type: 'int' },
+    name: { type: 'varchar' },
+  },
+};
+```
+
+Don't forget to add your schemas to the connection config.
+
+```js
+entitySchemas: [userSchema, roleSchema],
+```
+
+You don't need to create specific routes for adding roles, instead for the purposes of the guide you can simply issue a MySQL query that will add a role from the MySQL prompt. Usually, the MySQL prompt is accessible under the `mysql` command in the shell.
+
+```js
+insert into role (name) values ('user');
+```
+
+### Registration
+
+Before creating the routes for user registration and login, let's add the JWT secret to our config under the `authSecret` key. In this case, you can simply use an environment variable.
+
+```js
+const config = {
+  authSecret: process.env.JWT_SECRET,
+  // ...
+};
+```
+
+That secret is automatically added into the DI container and can be retrieved in route callbacks.
+
+Let's create a user registration route.
+
+```js
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
+
+// ...
+
+const config = {
+  // ...
+  routes: {
+    userRegister: {
+      path: '/user/register',
+      methods: ['POST'],
+      callback: async (req, { authSecret, userRepository, roleRepository }) => {
+        try {
+          // Get username and password from the request.
+          const { username, password } = req.body;
+
+          // Check if that username exists.
+          const userExists = await userRepository.findOne({ username });
+          if (userExists) {
+            return { status: 400, body: { error: 'Username already in use.' } };
+          }
+
+          // Find the user role.
+          const userRole = await roleRepository.findOne({ name: 'user' });
+
+          // Hash the password.
+          const hash = await bcrypt.hash(password, 10);
+
+          // Save the user into a database.
+          const user = await userRepository.save({ username, hash, roles: [userRole] });
+
+          // Create a JSON web token.
+          const token = jwt.sign(user.id, authSecret);
+
+          // Add it to our user
+          user.authorization = `Bearer ${token}`;
+
+          // Delete the hashed password before returning the user.
+          delete user.hash;
+
+          // Return the user.
+          return { status: 201, body: user };
+        } catch (error) {
+          return { status: 400, body: { error: 'Bad request.' } };
+        }
+      },
     },
-    name: {
-      type: 'varchar',
-      unique: true,
+  },
+};
+```
+
+Note that since you are taking your JWT secret from the environment variables, you need to export it first.
+
+```sh
+export JWT_SECRET=shhhh
+```
+
+Now you can run your server and test your endpoint with `curl`:
+
+```sh
+curl http://localhost:8080/user/register \
+  -X POST -H \
+  'content-type: application/json' \
+  -d '{"username":"cherry","password":"shhh"}'
+```
+
+Which yields:
+
+```json
+{
+   "username" : "cherry",
+   "authorization" : "Bearer <jwt>",
+   "roles" : [
+      {
+         "id" : 1,
+         "name" : "user"
+      }
+   ],
+   "id" : 2
+}
+```
+
+Instead of `<jwt>` you should see the full JSON web token.
+
+### Login
+
+Let's add a login route, which will be similar to the registration. It will take username and password in parameters and return the user from our database.
+
+```js
+const config = {
+  // ...
+  routes: {
+    // ...
+    userLogin: {
+      path: '/user/login',
+      methods: ['POST'],
+      callback: async (req, { authSecret, userRepository }) => {
+        try {
+          // Get username and password from the request.
+          const { username, password } = req.body;
+
+          // Check if that username exists.
+          const user = await userRepository.findOne({ username });
+          if (!user) {
+            return { status: 401, body: { error: 'User not found.' } };
+          }
+
+          // Check if the password hashes match.
+          const match = await bcrypt.compare(password, user.hash);
+          if (!match) {
+            return { status: 401, body: { error: 'Invalid password.' } };
+          }
+
+          // Create a JSON web token.
+          const token = jwt.sign(user.id, authSecret);
+
+          // Add it to our user.
+          user.authorization = `Bearer ${token}`;
+
+          // Delete the hashed password before returning the user.
+          delete user.hash;
+
+          // Return the user.
+          return { status: 201, body: user };
+        } catch (error) {
+          return { status: 400, body: { error: 'Bad request.' } };
+        }
+      },
     },
-    addedOn: {
-      type: 'timestamp',
+  },
+};
+```
+
+Let's test the route with `curl` to see if it works.
+
+```sh
+curl http://localhost:8080/user/login \
+  -X POST -H \
+  'content-type: application/json' \
+  -d '{"username":"cherry","password":"shhh"}'
+```
+
+You should receive a similar object.
+
+```sh
+{
+   "roles" : [
+      {
+         "name" : "user",
+         "id" : 1
+      }
+   ],
+   "id" : 2,
+   "username" : "cherry",
+   "authorization" : "Bearer <jwt>"
+}
+```
+
+For development convenience, you can copy the `<jwt>` part of the received token and export it into an environment variable.
+
+```sh
+export auth=<jwt>
+```
+
+### Authorization
+
+Let's now create a simple route that will be blocked for users without specified roles.
+
+```js
+const config = {
+  // ...
+  routes: {
+    // ...
+    secretRoute: {
+      path: '/wall',
+      methods: ['GET'],
+      callback: () => 'Congrats, you\'re in!',
+    },
+  },
+};
+```
+
+hadron-auth uses an array of blocked routes provided in the `securedRoutes` key of the config. 
+
+```js
+const config = {
+  // ...
+  securedRoutes: [
+    {
+      path: '/wall',
+      methods: ['POST'],
+      roles: ['user'],
+    },
+  ],
+}
+```
+
+There are a few things to point out here:
+
+- `path` supports star wild cards, so you can for instance specify a path like `/path/*` to block `/path/to` but not `/path/to/something`. You can also use double star so `/path/**` will block every route that starts with `/path/`.
+
+- `methods` field takes an array of HTTP verbs that should be blocked. If that field is unspecified, every HTTP verb will be blocked.
+
+- `roles` takes an array of strings or arrays of strings. The first level is an *OR* operation, second level is an *AND* operation. For instance, `roles` declared as `[['admin', 'user'], 'manager']` will let in a user that's *admin and user* or *manager*.
+
+If you use the default authorization middleware, to access any of the routes specified in that key, you will need an `Authorization` header.
+
+If you try to access that route now:
+
+```sh
+curl http://localhost:8080/wall
+```
+
+You should receive an error:
+
+```json
+{
+   "error" : {
+      "message" : "Unauthorized"
+   }
+}
+```
+
+However, if you access the same route with a valid Authorization header:
+
+```sh
+curl http://localhost:8080/wall -H 'Authorization: Bearer '$auth
+```
+
+You should receive a simple text response:
+
+```
+"Congrats, you're in!"
+```
+
+### Complete example
+
+```js
+const hadron = require('@brainhubeu/hadron-core').default;
+const express = require('express');
+const bodyParser = require('body-parser');
+
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+
+const dependencies = [
+  require('@brainhubeu/hadron-auth'),
+  require('@brainhubeu/hadron-express'),
+  require('@brainhubeu/hadron-typeorm'),
+];
+
+const port = process.env.PORT || 8080;
+const app = express();
+app.use(bodyParser.json());
+
+const userSchema = {
+  name: 'user',
+  columns: {
+    id: { primary: true, generated: true, type: 'int' },
+    username: { unique: true, type: 'varchar' },
+    hash: { type: 'varchar' },
+  },
+  relations: {
+    roles: {
+      target: 'role',
+      type: 'many-to-many',
+      joinTable: { name: 'user_role' },
     },
   },
 };
 
-module.exports = roleSchema;
-```
-
-Don't forget to add schemas to your database config, example below:
-
-```javascript
-// config/db.js
-const userSchema = require('../schemas/User');
-const roleSchema = require('../schemas/Role');
-
-const connection = {
-  name: 'mysql-connection',
-  type: 'mysql',
-  host: 'localhost',
-  port: 3306,
-  username: 'root',
-  password: 'my-secret-pw',
-  database: 'done-it',
-  entitySchemas: [roleSchema, userSchema],
-  synchronize: true,
+const roleSchema = {
+  name: 'role',
+  columns: {
+    id: { primary: true, generated: true, type: 'int' },
+    name: { type: 'varchar' },
+  },
 };
 
-module.exports = connection,
-```
-
-Now you need to prepare your Hadron configuration file where you can add secured routes, for example:
-
-```javascript
-// index.js
 const config = {
+  connection: {
+    connectionName: 'default',
+    type: 'mysql',
+    host: 'localhost',
+    port: 3306,
+    username: 'root',
+    password: process.env.DATABASE_PW,
+    database: 'authdemo',
+    entitySchemas: [userSchema, roleSchema],
+    synchronize: true,
+  },
+  authSecret: process.env.JWT_SECRET,
   routes: {
-    helloWorldRoute: {
-      path: '/',
-      methods: ['GET'],
-      callback: () => 'Hello World',
+    userRegister: {
+      path: '/user/register',
+      methods: ['POST'],
+      callback: async (req, { authSecret, userRepository, roleRepository }) => {
+        try {
+          // Get username and password from the request.
+          const { username, password } = req.body;
+
+          // Check if that username exists.
+          const userExists = await userRepository.findOne({ username });
+          if (userExists) {
+            return { status: 400, body: { error: 'Username already in use.' } };
+          }
+
+          // Find the user role.
+          const userRole = await roleRepository.findOne({ name: 'user' });
+
+          // Hash the password.
+          const hash = await bcrypt.hash(password, 10);
+
+          // Save the user into a database.
+          const user = await userRepository.save({ username, hash, roles: [userRole] });
+
+          // Create a JSON web token.
+          const token = jwt.sign(user.id, authSecret);
+
+          // Add it to our user
+          user.authorization = `Bearer ${token}`;
+
+          // Delete the hashed password before returning the user.
+          delete user.hash;
+
+          // Return the user.
+          return { status: 201, body: user };
+        } catch (error) {
+          console.error(error);
+          return { status: 400, body: { error: 'Bad request.' } };
+        }
+      },
     },
-    adminRoute: {
-      path: '/admin',
-      methods: ['GET'],
-      callback: () => 'Hello Admin',
+    userLogin: {
+      path: '/user/login',
+      methods: ['POST'],
+      callback: async (req, { authSecret, userRepository }) => {
+        try {
+          // Get username and password from the request.
+          const { username, password } = req.body;
+
+          // Check if that username exists.
+          const user = await userRepository.findOne({
+            where: { username },
+            relations: ['roles'],
+          });
+          if (!user) {
+            return { status: 401, body: { error: 'User not found.' } };
+          }
+
+          // Check if the password hashes match.
+          const match = await bcrypt.compare(password, user.hash);
+          if (!match) {
+            return { status: 401, body: { error: 'Invalid password.' } };
+          }
+
+          // Create a JSON web token.
+          const token = jwt.sign(user.id, authSecret);
+
+          // Add it to our user.
+          user.authorization = `Bearer ${token}`;
+
+          // Delete the hashed password before returning the user.
+          delete user.hash;
+
+          // Return the user.
+          return { status: 201, body: user };
+        } catch (error) {
+          return { status: 400, body: { error: 'Bad request.' } };
+        }
+      },
     },
-    userRoute: {
-      path: '/user',
+    secretRoute: {
+      path: '/wall',
       methods: ['GET'],
-      callback: () => 'Hello User',
+      callback: () => 'Congrats, you\'re in!',
     },
   },
   securedRoutes: [
     {
-      path: '/admin/*',
-      methods: ['GET', 'POST', 'PUT', 'DELETE'],
-      roles: 'Admin',
-    },
-    {
-      path: '/user/*',
-      roles: ['Admin', 'User'],
+      path: '/wall',
+      roles: ['user'],
     },
   ],
 };
+
+hadron(app, dependencies, config).then(() => {
+  app.listen(port, () => {
+    console.log(`App listening on port ${port}`);
+  });
+});
 ```
 
-Finally you need to add **hadron-auth** to the Hadron initialization method:
+## Authorization middleware
 
-```javascript
-const hadron = require('@brainhubeu/hadron-core').default;
-const hadronExpress = require('@brainhubeu/hadron-express');
-const hadronTypeOrm = require('@brainhubeu/hadron-typeorm');
-const hadronAuth = require('@brainhubeu/hadron-auth');
-const express = require('express');
+The hadron-auth's default authorization middleware uses a JSON web token with the user ID encoded in it to authorize users based on their roles. The middleware verifies the Bearer token provided in the Authorization request header and, if valid, lets the user through.
 
-const expressApp = express();
+Generally speaking, the default middleware makes certain assumptions about your application's architecture and in certain cases it may not be precisely the solution you need. For that, hadron-auth allows for defining your own authorization middleware.
 
-const hadronInit = async () => {
-  const config = {
-    routes: {
-      helloWorldRoute: {
-        path: '/',
-        methods: ['GET'],
-        callback: () => 'Hello World',
-      },
-      adminRoute: {
-        path: '/admin',
-        methods: ['GET'],
-        callback: () => 'Hello Admin',
-      },
-      userRoute: {
-        path: '/user',
-        methods: ['GET'],
-        callback: () => 'Hello User',
-      },
-    },
-    securedRoutes: [
-      {
-        path: '/admin/*',
-        methods: ['GET', 'POST', 'PUT', 'DELETE'],
-        roles: 'Admin',
-      },
-      {
-        path: '/user/*',
-        roles: ['Admin', 'User'],
-      },
-    ],
-  };
+To use a custom authorization middleware, define it in the config as follows:
 
-  const container = await hadron(
-    expressApp,
-    [hadronAuth, hadronExpress, hadronTypeOrm],
-    config,
-  );
-};
+```js
+const config = {
+  authorizationMiddleware: (container) => {
+    return (req, res, next) => {
+      // custom authorization logic
+    }
+  }
+}
 ```
 
----
+Note that this is essentially a raw Express middleware. To prevent authorization you can immediately return appropriate HTTP statuses using the `http.response` syntax.
 
-> **Warning:** You should include hadronAuth first to the Hadron packages array.
-
-Now your routes are secured. By default, **hadron-auth** authorizes users by a **JSON web woken**, passed as `Authorization` header.
-
-### Creating a custom auth middleware
-
-You can pass your own function in the Hadron configuration to check if a user is authorized to the secured route.
-Here is the skeleton for the authorization middleware:
-
-```javascript
-const authorizationMiddleware = (container) => {
-  return (req, res, next) => {};
-};
+```js
+return res.status(401).json({ error: 'Authorization failed.' });
+// or
+return res.status(403).json({ error: 'You can\'t access this resource.' });
 ```
 
-**hadron-auth** provides the `isAllowed` function, to check if a user is allowed to access a specific route:
+If, on the other hand, you want the authorization to succeed just return `next()`.
 
-```javascript
-isAllowed(path, method, user, allRoles);
-```
+To simplify working with paths and roles, hadron-auth exposes two utility functions (that can be `require`d from the hadron-auth module).
 
-Where:
+- `isRouteNotSecure(path)` checks if `path` even exists in the `securedRotes` key.
+- `isAllowed(path, method, user, allRoles)` checks if the user is allowed access to the route where:
+  - `path` is the route path (usually `req.path`)
+  - `method` is the route method (usually `req.method`)
+  - `user` is the user object that has the `roles` key (see [Schemas](#schemas))
+  - `allRoles` is an array of names of all roles in the database
 
-* `path` - path to a secured route, for example `/api/admin/`
-* `method` - HTTP method
-* `user` - User object, which has to contain roles
-* `allRoles` - All roles stored in the database (only role names).
+The following is an example of an authorization middleware structure using the utility functions:
 
-Here is an example of the authorization middleware:
-
-```javascript
-const jwt = require('jsonwebtoken');
-const { isRouteNotSecure, isAllowed } = require('@brainhubeu/hadron-auth');
-
-const errorResponse = {
-  message: 'Unauthorized',
-};
-
-const expressMiddlewareAuthorization = (container) => {
-  return async (req, res, next) => {
+```js
+const config = {
+  authorizationMiddleware: (container) => async (req, res, next) => {
     try {
       if (isRouteNotSecure(req.path)) {
         return next();
@@ -236,79 +587,19 @@ const expressMiddlewareAuthorization = (container) => {
       const userRepository = container.take('userRepository');
       const roleRepository = container.take('roleRepository');
 
-      const token = req.headers.authorization;
-
-      const decoded: any = jwt.decode(token);
-
-      const user = await userRepository.findOne({
-        where: { id: decoded.id },
-        relations: ['roles'],
-      });
-
-      if (!user) {
-        return res.status(403).json({ error: errorResponse });
-      }
-
-      const allRoles = await roleRepository.find();
-
-      if (
-        isAllowed(req.path, req.method, user, allRoles.map((role) => role.name))
-      ) {
+      // const user = await userRepository.find(req.body.id);
+      
+      const roles = await roleRepository.find();
+      const allRoles = roles.map(role => role.name);
+      
+      if (isAllowed(req.path, req.method, user, allRoles)) {
         return next();
       }
 
-      return res.status(403).json({ error: errorResponse });
+      return res.status(403).json({ error: 'You cannot access this resource.' });
     } catch (error) {
-      return res.status(403).json({ error: errorResponse });
-    }
-  };
-};
-
-module.exports = expressMiddlewareAuthorization;
-```
-
-To use it, you need to pass an expressMiddlewareAuthorization function as `authorizationMiddleware` key in hadron config.
-
-```javascript
-const config = {
-  authorizationMiddleware: YourCustomFunction,
+      return res.status(401).json({ error: 'Authorization unsuccessful.' });
+    };
+  },
 };
 ```
-
-### Usage:
-
-```javascript
-const securedRoutes = [
-  {
-    path: '/api/**',
-    methods: ['GET'],
-    roles: ['Admin', 'User'],
-  },
-  {
-    path: '/api/**',
-    methods: ['POST', 'PUT', 'DELETE'],
-    roles: 'Admin',
-  },
-  {
-    path: '/admin/*',
-    roles: 'Admin',
-  },
-  {
-    path: 'product/info',
-    methods: ['GET'],
-    roles: [['Admin', 'User'], 'Manager'],
-  },
-];
-```
-
-* `path` - here we can specify the route path we want to secure, we can use a static path like `/api/admin/tasks` or by pattern:
-  * `/api/admin/*` - route after `/api/admin/` is secure, for example `/api/admin/tasks` is secure, but `/api/admin/tasks/5` will be not secure
-  * `/api/admin/**` - every route after `/api/admin` is secure
-* `methods` - an array of strings, where you can pass role names. If you don't provide any roles, the route will be secure but a user with **any** role. If the user has no roles, he or she will not be authorized.
-* `roles` - here you can pass a single role name, an array of role names or an array of arrays of strings, which add some logic functionality. For example, if we declare:
-
-```javascript
-roles[(['Admin', 'User'], 'Manager')];
-```
-
-The user needs the **Admin and User** roles or the **Manager** role to access the route.
