@@ -39,7 +39,7 @@ When setting up routes with Hadron, we are able to include them as objects in th
 const config = {
   routes: {
     helloWorldRoute: {
-      callback: () ='Hello world !',
+      callback: () => 'Hello world !',
       methods: ['GET'],
       path: '/',
     },
